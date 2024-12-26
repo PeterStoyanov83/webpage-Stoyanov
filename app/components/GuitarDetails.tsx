@@ -1,8 +1,10 @@
 'use client'
 
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Dialog, DialogContent, DialogTitle } from "../../components/ui/dialog"
+import { X } from 'lucide-react'
 
 interface Guitar {
     id: string
@@ -17,7 +19,7 @@ interface GuitarDetailsProps {
     guitar: Guitar
 }
 
-export default function GuitarDetails({guitar}: GuitarDetailsProps) {
+export default function GuitarDetails({ guitar }: GuitarDetailsProps) {
     const [selectedImage, setSelectedImage] = useState(guitar.images[0])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -54,59 +56,56 @@ export default function GuitarDetails({guitar}: GuitarDetailsProps) {
                 {/* Left Column: Images & Video */}
                 <div>
                     {/* Main Image */}
-                    <div
-                        className="mb-4 aspect-[3/2] relative rounded-lg overflow-hidden cursor-pointer"
-                        onClick={() => setIsImageOpen(true)}
-                    >
-                        <Image
-                            src={selectedImage}
-                            alt={guitar.name}
-                            fill
-                            className="object-cover"
-                            priority
-                        />
+                    <div className="relative mb-4 cursor-pointer group" onClick={() => setIsImageOpen(true)}>
+                        <div className="relative w-full pt-[75%]"> {/* 4:3 aspect ratio */}
+                            <Image
+                                src={selectedImage}
+                                alt={guitar.name}
+                                fill
+                                className="absolute inset-0 w-full h-full object-contain bg-black/50 rounded-lg"
+                                priority
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        </div>
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                            <span className="text-white text-sm">Click to enlarge</span>
+                        </div>
                     </div>
 
                     {/* Thumbnails */}
-                    <div className="grid grid-cols-6 gap-4">
+                    <div className="grid grid-cols-4 gap-2">
                         {guitar.images.map((image, index) => (
-                            <div
+                            <button
                                 key={index}
-                                className={`aspect-[3/2] relative cursor-pointer rounded-lg overflow-hidden ${
+                                onClick={() => setSelectedImage(image)}
+                                className={`relative pt-[75%] rounded-lg overflow-hidden ${
                                     selectedImage === image
                                         ? 'ring-2 ring-blue-500'
-                                        : 'ring-1 ring-gray-200'
+                                        : 'ring-1 ring-gray-200 hover:ring-blue-300'
                                 }`}
-                                onClick={() => setSelectedImage(image)}
                             >
                                 <Image
                                     src={image}
                                     alt={`${guitar.name} - Image ${index + 1}`}
                                     fill
-                                    className="object-cover hover:opacity-75 transition-opacity"
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                    sizes="(max-width: 768px) 25vw, 12vw"
                                 />
-                            </div>
+                            </button>
                         ))}
                     </div>
 
                     {/* Optional Video */}
                     {guitar.video && (
                         <div className="mt-8 w-full">
-                            <h2 className="text-2xl font-semibold mb-4">Demo Video</h2>
-                            <div className="w-full h-[600px] relative rounded-lg shadow-lg overflow-hidden bg-black">
+                            <h2 className="text-2xl font-semibold mb-4 text-gray-200">Demo Video</h2>
+                            <div className="relative pt-[56.25%] rounded-lg overflow-hidden bg-black"> {/* 16:9 aspect ratio */}
                                 <iframe
                                     src={guitar.video}
                                     className="absolute inset-0 w-full h-full"
                                     allowFullScreen
                                     frameBorder="0"
-                                    scrolling="no"
                                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                                    style={{
-                                        minWidth: '100%',
-                                        minHeight: '100%',
-                                        verticalAlign: 'middle',
-                                        border: 'none',
-                                    }}
                                 />
                             </div>
                         </div>
@@ -132,25 +131,30 @@ export default function GuitarDetails({guitar}: GuitarDetailsProps) {
                 </div>
             </div>
 
-            {/* Simple Custom Modal for Enlarged Image */}
-            {isImageOpen && (
-                <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
-                    onClick={() => setIsImageOpen(false)}
-                >
-                    <div
-                        className="relative w-11/12 md:w-3/4 h-3/4"
-                        onClick={(e) => e.stopPropagation()}
-                    >
+            {/* Image Modal */}
+            <Dialog open={isImageOpen} onOpenChange={setIsImageOpen}>
+                <DialogContent className="p-0 w-auto max-w-[95vw] max-h-[95vh] overflow-hidden rounded-lg">
+                    <DialogTitle className="sr-only">{guitar.name}</DialogTitle>
+                    <div className="relative rounded-lg overflow-hidden">
                         <Image
                             src={selectedImage}
                             alt={guitar.name}
-                            fill
-                            className="object-contain"
+                            width={1200}
+                            height={800}
+                            className="w-full h-auto max-h-[95vh] object-contain rounded-lg"
+                            priority
                         />
+                        <button
+                            onClick={() => setIsImageOpen(false)}
+                            className="absolute top-2 right-2 p-1 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white rounded-full bg-black/50"
+                            aria-label="Close"
+                        >
+                            <X className="h-6 w-6" />
+                        </button>
                     </div>
-                </div>
-            )}
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
+
