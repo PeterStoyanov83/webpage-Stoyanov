@@ -12,7 +12,7 @@ export function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { id: Promise<string> } }): Promise<Metadata> {
   const id = await params.id
   const service = services.find(s => s.id === id)
   if (!service) {
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   return baseGenerateMetadata(service.name, service.shortDescription)
 }
 
-export default async function ServicePage({ params }: { params: { id: string } }) {
+export default async function ServicePage({ params }: { params: { id: Promise<string> } }) {
   const id = await params.id
   const service = services.find(s => s.id === id)
 

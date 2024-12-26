@@ -12,7 +12,7 @@ export function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { id: Promise<string> } }): Promise<Metadata> {
   const id = await params.id
   const guitar = guitars.find(g => g.id === id)
   if (!guitar) {
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   return baseGenerateMetadata(guitar.name, guitar.shortDescription)
 }
 
-export default async function GuitarPage({ params }: { params: { id: string } }) {
+export default async function GuitarPage({ params }: { params: { id: Promise<string> } }) {
   const id = await params.id
   const guitar = guitars.find(g => g.id === id)
 
