@@ -9,7 +9,7 @@ interface GuitarsProps {
 export default function Guitars({ id }: GuitarsProps) {
   return (
     <section id={id} className="py-16">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 ">
         <div className="section-bg p-8 rounded-lg">
           <h2 className="text-3xl font-bold text-center mb-12 text-white">My Guitars</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

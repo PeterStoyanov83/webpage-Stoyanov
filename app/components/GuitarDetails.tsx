@@ -43,7 +43,7 @@ export default function GuitarDetails({ guitar }: GuitarDetailsProps) {
   return (
     <div className="container mx-auto px-4 py-16">
       <Link
-        href="/guitars"
+        href="/#guitars"
         className="inline-block mb-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors"
       >
         ← Back to Guitars
