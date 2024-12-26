@@ -6,26 +6,24 @@ import ServiceDetailsWrapper from '../../components/ServiceDetailsWrapper'
 import { services } from '../../data/services'
 import { generateMetadata as baseGenerateMetadata } from '../../lib/metadata'
 
-interface Props {
-  params: { id: string }
-}
-
 export function generateStaticParams() {
   return services.map((service) => ({
     id: service.id,
   }))
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const service = services.find(s => s.id === params.id)
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = await params.id
+  const service = services.find(s => s.id === id)
   if (!service) {
     return baseGenerateMetadata('Service Not Found', 'The requested service could not be found.')
   }
   return baseGenerateMetadata(service.name, service.shortDescription)
 }
 
-export default function ServicePage({ params }: Props) {
-  const service = services.find(s => s.id === params.id)
+export default async function ServicePage({ params }: { params: { id: string } }) {
+  const id = await params.id
+  const service = services.find(s => s.id === id)
 
   if (!service) {
     notFound()
