@@ -19,7 +19,7 @@ export default function Hero({id}: { id?: string }) {
                         to
                         Stoyanov Guitars Page!</p>
                     <p className={cn("text-xl mb-8 font-semibold invert text-center", "drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]")}>Everything
-                        you see here is a made by me. including the webpage itself.</p>
+                        you see here is made by me - Peter Stoyanov, including the webpage itself.</p>
 
                 </div>
             </div>
