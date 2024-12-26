@@ -6,11 +6,11 @@ import { guitars } from '../../data/guitars'
 
 export const metadata: Metadata = {
   title: 'Fretless Bass | Stoyanov Guitars',
-  description: 'Custom fretless bass guitar currently in development.',
+  description: 'Custom fretless-bass bass guitar currently in development.',
 }
 
 export default function FretlessBassPage() {
-  const guitar = guitars.find(g => g.id === 'fretless-bass')
+  const guitar = guitars.find(g => g.id === 'fretless-bass-bass')
 
   if (!guitar) {
     return <div>Guitar not found</div>
