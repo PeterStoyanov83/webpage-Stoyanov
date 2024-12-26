@@ -87,7 +87,7 @@ export const guitars: Guitar[] = [
             'The Modern T is perfect for players who appreciate classic aesthetics but demand cutting-edge ' +
             'performance.',
         specifications: {
-            Body: 'Ash',
+            Body: 'Ash + Oak Drop Top',
             Neck: 'Maple',
             Fretboard: 'Bolt-on Modern Maple',
             Frets: '22 Medium Jumbo',

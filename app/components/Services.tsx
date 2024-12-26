@@ -10,12 +10,12 @@ export default function Services({ id }: { id?: string }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {services.map((service) => (
               <Link href={`/services/${service.id}`} key={service.id} className="block">
-                <div className="bg-white bg-opacity-10 rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:scale-105">
+                <div className="bg-white bg-opacity-10 rounded-lg  overflow-hidden shadow-md transition-transform duration-300 hover:scale-105">
                   <div className="p-6">
                     <div className="flex justify-center mb-4">
-                      <service.icon className="w-16 h-16 text-white" aria-hidden="true" />
+                      <service.icon className="w-16 h-16 text-white " aria-hidden="true" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2 text-center text-white">{service.name}</h3>
+                    <h3 className="text-xl font-semibold mb-2 text-center text-white ">{service.name}</h3>
                     <p className="text-gray-300 text-center">{service.shortDescription}</p>
                   </div>
                 </div>
