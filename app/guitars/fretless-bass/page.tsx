@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default function FretlessBassPage() {
-  const guitar = guitars.find(g => g.id === 'fretless-bass-bass')
+  const guitar = guitars.find(g => g.id === 'fretless-bass')
 
   if (!guitar) {
     return <div>Guitar not found</div>

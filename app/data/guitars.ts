@@ -127,7 +127,7 @@ export const guitars: Guitar[] = [
         }
     },
     {
-        id: 'fretless-bass-bass',
+        id: 'fretless-bass',
         name: 'Fretless Bass',
         image: '/images/guitars/frettless-bass/fretless01.jpg',
         shortDescription: 'An Idea Of Mine Still In Development.',
