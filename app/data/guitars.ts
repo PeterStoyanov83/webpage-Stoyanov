@@ -101,51 +101,58 @@ export const guitars: Guitar[] = [
         id: 'wednesday',
         name: 'Wednesday',
         image: '/images/guitars/wednesday/wednesday001.jpg',
-        shortDescription: 'The Guitar With a Soul.',
+        shortDescription: 'A Guitar With a Soul.',
         images: [
             '/images/guitars/wednesday/wednesday01.jpg',
             '/images/guitars/wednesday/wednesday001.jpg',
             '/images/guitars/wednesday/wednesday002.jpeg',
             '/images/guitars/wednesday/wednesday.jpg',
         ],
-        description: 'Wednesday is a project for a friend of mine. Here is what he says about Her :' +
-            ' With her darkly seductive body lines, her aggressive tones and  haunting sustain, ' +
-            'This Voodoo queen is charged with a magical recipe of gear thus transforming the player into a soulful ' +
-            'singing soloist or a Juggernaut of brutal riffage',
+        description: 'With her darkly seductive body lines, her aggressive tones and haunting sustain, this Voodoo ' +
+            'queen is charged with a magical recipe of gear thus transforming the player into a soulful singing soloist ' +
+            'or a Juggernaut of brutal riffage. Featuring a stunning quilted maple top in deep burgundy, this guitar is' +
+            ' equipped with EMG active pickups for powerful, clear tone. Perfect for modern metal and progressive styles.',
+
         specifications: {
-            Body: 'Alder',
-            Neck: 'Maple',
-            Fretboard: 'Rosewood',
-            Frets: '22 Medium Jumbo',
-            Pickups: '3 x Custom Single-coil',
-            Bridge: 'Vintage-style Tremolo',
+            Body: 'Swamp Ash + AAAA Spalted Curly Maple Top',
+            Neck: 'Maple and Cherry',
+            Fretboard: 'AAA Ebony',
+            Frets: '24 SS Jumbo',
+            Pickups: 'EMG Active Humbuckers',
+            Bridge: 'Vintage-style Tuneomatic Rolling',
+            Tuners: 'Gotoh Magnum Lock-Trad 6-In-Line Tuners',
             Hardware: 'Chrome',
-            ScaleLength: '25.5" (648mm)',
+            ScaleLength: '24.75"',
+            Construction: 'Set Neck'
         }
     },
     {
         id: 'fretless-bass',
         name: 'Fretless Bass',
         image: '/images/guitars/frettless-bass/fretless01.jpg',
-        shortDescription: 'Rich tones and exceptional comfort for the discerning player.',
+        shortDescription: 'An Idea Of Mine Still In Development.',
         images: [
             '/images/guitars/frettless-bass/fretless01.jpg',
             '/images/guitars/frettless-bass/fretless02.jpg',
             '/images/guitars/frettless-bass/fretless03.jpg',
             '/images/guitars/frettless-bass/fretless04.jpg',
         ],
-        description: 'This Project is still in progress. I had the inspiration from Marleaux ' +
-            'Diva. But the reason I started it was the Koa top I got from another guitar builder from Switzerland. ' +
-            'The idea is to make a 3 in 1 bass - Electric (with a Stingray style humbucker pickup), ' +
-            'Acoustic (piezo pictups under the saddle) and syth - Taken from the piezo digitalised sound.',
+        description: 'Currently in development, this custom fretless bass represents our venture into the world of' +
+            ' bass instruments. Inspired by the Marleaux Diva and featuring a beautiful Koa top sourced from a ' +
+            'Swiss guitar builder, this bass is designed to be a versatile 3-in-1 instrument. It combines electric, ' +
+            'acoustic, and synth capabilities, offering players an incredibly wide range of tonal possibilities. ' +
+            'The fretless design promises to deliver the smooth, singing qualities that only a fretless bass can ' +
+            'provide, while the multiple pickup systems ensure unparalleled versatility.',
         specifications: {
-            Body: 'Solid Koa Top',
-            Neck: 'Laminated, Shisham, Pear Wood',
-            Fretboard: 'Shisham',
-            Frets: 'Fretless',
-            Bridge: '',
-            NutAndSaddle: 'Bone',
-            ScaleLength: 'Soon to be determined',
+            Body: 'Alder base with Koa top',
+            Neck: 'In development',
+            Fingerboard: 'Shisham wood - Fretless design',
+            Pickups: 'Stingray style humbucker (Electric), Piezo pickups under the saddle (Acoustic)',
+            Electronics: 'Piezo to synth conversion system',
+            Bridge: 'To be determined',
+            Hardware: 'To be determined',
+            SpecialFeatures: 'Fretless design, 3-in-1 functionality (Electric, Acoustic, Synth)',
+            Construction: 'In progress',
         }
-    },
+    }
 ]
