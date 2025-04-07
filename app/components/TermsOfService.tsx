@@ -1,6 +1,6 @@
 export default function TermsOfService() {
   return (
-    <div className="container invert mx-auto px-4 py-16 pt-32">
+    <div className="container  mx-auto px-4 py-16 pt-32">
       <h1 className="text-3xl font-bold mb-8">Terms of Service</h1>
       <p className="mb-4">Last updated: [Current Date]</p>
       <p className="mb-4">Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the https://www.stoyanovguitars.com website (the "Service") operated by Stoyanov Guitars ("us", "we", or "our").</p>

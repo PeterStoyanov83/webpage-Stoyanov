@@ -7,6 +7,13 @@ export interface Guitar {
     video?: string
     description: string
     specifications: Record<string, string>
+    // These fields will be used for translations
+    translationKeys?: {
+        name?: string
+        shortDescription?: string
+        description?: string
+        specifications?: Record<string, string>
+    }
 }
 
 export const guitars: Guitar[] = [

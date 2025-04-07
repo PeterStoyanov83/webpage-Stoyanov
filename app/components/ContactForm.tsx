@@ -1,148 +1,178 @@
 'use client'
 
-import {useState, useRef} from 'react'
-import emailjs from '@emailjs/browser'
+import { useState } from 'react'
+import { useLanguage } from '../contexts/LanguageContext'
+import SectionReveal from './SectionReveal'
 
-export default function ContactForm({id}: { id?: string }) {
-    const [formData, setFormData] = useState({
-        from_name: '',
-        reply_to: '',
-        service_type: '',
-        message: '',
-    })
-    const [notification, setNotification] = useState('')
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const form = useRef<HTMLFormElement>(null)
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const {name, value, type} = e.target
-        if (type === 'file') {
-            setFormData(prev => ({...prev, [name]: (e.target as HTMLInputElement).files}))
-        } else {
-            setFormData(prev => ({...prev, [name]: value}))
-        }
-    }
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        if (!form.current) {
-            console.error('Form reference is null')
-            return
-        }
-
-        setIsSubmitting(true)
-
-        try {
-            // Ensure NEXT_PUBLIC_EMAILJS_PUBLIC_KEY is set in your environment variables
-            const result = await emailjs.sendForm(
-                'service_qac64zj',
-                'template_vpb2pqh',
-                form.current,
-                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-            )
-
-            console.log('Email sent successfully:', result.text)
-            setFormData({
-                from_name: '',
-                reply_to: '',
-                service_type: '',
-                message: '',
-            })
-            setNotification('Message sent successfully!')
-        } catch (err) {
-            console.error('Error sending email:', err);
-            if (err instanceof Error) {
-                console.error('Error details:', err.message);
-            } else if (typeof err === 'object' && err !== null) {
-                console.error('Error object details:', JSON.stringify(err, null, 2));
-            } else {
-                console.error('Unknown error type:', typeof err);
-            }
-            setNotification('Failed to send message. Please try again or contact the administrator.');
-        } finally {
-            setIsSubmitting(false)
-            setTimeout(() => setNotification(''), 3000)
-        }
-    }
-
-    return (
-        <section id={id} className="py-16">
-            <div className="container mx-auto px-4">
-                <div className="section-bg p-8 rounded-lg">
-                    <h2 className="text-3xl font-bold text-center mb-8 text-white">Contact</h2>
-                    {notification && (
-                        <div className={`mb-4 p-2 rounded text-center ${
-                            notification.includes('success')
-                                ? 'bg-green-100 border border-green-400 text-green-700'
-                                : 'bg-red-100 border border-red-400 text-red-700'
-                        }`}>
-                            {notification}
-                        </div>
-                    )}
-                    <form ref={form} onSubmit={handleSubmit} className="max-w-lg mx-auto">
-                        <div className="mb-4">
-                            <label htmlFor="from_name" className="block text-white font-bold mb-2">Name</label>
-                            <input
-                                type="text"
-                                id="from_name"
-                                name="from_name"
-                                value={formData.from_name}
-                                onChange={handleChange}
-                                required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-20 text-white"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="reply_to" className="block text-white font-bold mb-2">Email</label>
-                            <input
-                                type="email"
-                                id="reply_to"
-                                name="reply_to"
-                                value={formData.reply_to}
-                                onChange={handleChange}
-                                required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-20 text-white"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="service_type" className="block text-white font-bold mb-2">Service</label>
-                            <select
-                                id="service_type"
-                                name="service_type"
-                                value={formData.service_type}
-                                onChange={handleChange}
-                                required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-20 text-white"
-                            >
-                                <option value="">Select a service</option>
-                                <option value="Custom Guitar Building">Custom Guitar Building</option>
-                                <option value="Repairs and Restorations">Repairs and Restorations</option>
-                                <option value="Upgrades and Modifications">Upgrades and Modifications</option>
-                            </select>
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="message" className="block text-white font-bold mb-2">Message</label>
-                            <textarea
-                                id="message"
-                                name="message"
-                                value={formData.message}
-                                onChange={handleChange}
-                                required
-                                rows={4}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-20 text-white"
-                            ></textarea>
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 disabled:opacity-50"
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? 'Sending...' : 'Send Message'}
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-    )
+interface ContactFormProps {
+  id?: string
 }
 
+export default function ContactForm({ id }: ContactFormProps) {
+  const { t } = useLanguage()
+  const [formState, setFormState] = useState({
+    name: '',
+    email: '',
+    message: '',
+    file: null as File | null
+  })
+  const [status, setStatus] = useState({
+    submitting: false,
+    submitted: false,
+    success: false,
+    message: ''
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormState({
+      ...formState,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormState({
+        ...formState,
+        file: e.target.files[0]
+      })
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setStatus({ ...status, submitting: true })
+
+    const formData = new FormData()
+    formData.append('name', formState.name)
+    formData.append('email', formState.email)
+    formData.append('message', formState.message)
+    if (formState.file) {
+      formData.append('file', formState.file)
+    }
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        body: formData
+      })
+
+      const data = await response.json()
+      
+      setStatus({
+        submitting: false,
+        submitted: true,
+        success: data.success,
+        message: data.message
+      })
+
+      if (data.success) {
+        setFormState({
+          name: '',
+          email: '',
+          message: '',
+          file: null
+        })
+      }
+    } catch (error) {
+      setStatus({
+        submitting: false,
+        submitted: true,
+        success: false,
+        message: t('errorSubmitting', 'contactForm') as string
+      })
+    }
+  }
+
+  return (
+    <div id={id} className="bg-white shadow-xl rounded-lg p-8 max-w-md mx-auto my-12 hover-card">
+      <SectionReveal animation="fade-in" delay={100}>
+        <h2 className="text-3xl font-bold mb-6 text-center">{t('contactUs', 'contactForm')}</h2>
+      </SectionReveal>
+      
+      {status.submitted && (
+        <div className={`mb-4 p-3 rounded ${status.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} animate-scale`}>
+          {status.message}
+        </div>
+      )}
+      
+      <form onSubmit={handleSubmit}>
+        <SectionReveal animation="slide-up" delay={200}>
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
+              {t('name', 'contactForm')}
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formState.name}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400"
+            />
+          </div>
+        </SectionReveal>
+        
+        <SectionReveal animation="slide-up" delay={300}>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+              {t('email', 'contactForm')}
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formState.email}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400"
+            />
+          </div>
+        </SectionReveal>
+        
+        <SectionReveal animation="slide-up" delay={400}>
+          <div className="mb-4">
+            <label htmlFor="message" className="block text-gray-700 font-medium mb-2">
+              {t('message', 'contactForm')}
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              value={formState.message}
+              onChange={handleChange}
+              required
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400"
+            ></textarea>
+          </div>
+        </SectionReveal>
+        
+        <SectionReveal animation="slide-up" delay={500}>
+          <div className="mb-4">
+            <label htmlFor="file" className="block text-gray-700 font-medium mb-2">
+              {t('attachFile', 'contactForm')}
+            </label>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              onChange={handleFileChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400"
+            />
+          </div>
+        </SectionReveal>
+        
+        <SectionReveal animation="bounce" delay={600}>
+          <button
+            type="submit"
+            disabled={status.submitting}
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-blue-300 transform hover:scale-[1.02] transition-all duration-300 font-medium text-lg"
+          >
+            {status.submitting ? t('sending', 'contactForm') : t('send', 'contactForm')}
+          </button>
+        </SectionReveal>
+      </form>
+    </div>
+  )
+}

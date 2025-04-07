@@ -28,15 +28,31 @@ export async function sendEmail(formData: FormData): Promise<ServerActionRespons
     console.log('Sending email with data:', JSON.stringify(emailData, null, 2));
     console.log('File attached:', file ? file.name : 'No file attached');
 
-    // Save the email data to a JSON file
-    const filePath = path.join(process.cwd(), 'emails.json')
+    // Save the email data to a JSON file - using app directory for consistent path
+    const dataDir = path.join(process.env.APP_DIR || process.cwd(), 'data')
+    const filePath = path.join(dataDir, 'emails.json')
+    
     try {
+      // Ensure the data directory exists
+      try {
+        await fs.mkdir(dataDir, { recursive: true })
+      } catch (dirError) {
+        console.error('Error creating data directory:', dirError)
+        throw new EmailError('Failed to create data storage directory')
+      }
+      
       let emails: EmailData[] = []
       try {
         const fileContent = await fs.readFile(filePath, 'utf-8')
         emails = JSON.parse(fileContent)
-      } catch (error) {
+        if (!Array.isArray(emails)) {
+          throw new Error('Invalid emails data format')
+        }
+      } catch (readError) {
         // File doesn't exist or is empty, start with an empty array
+        if (readError instanceof Error && !readError.message.includes('ENOENT')) {
+          console.error('Error reading emails file:', readError)
+        }
       }
       emails.push(emailData)
       await fs.writeFile(filePath, JSON.stringify(emails, null, 2))

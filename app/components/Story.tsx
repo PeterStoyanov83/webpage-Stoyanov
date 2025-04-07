@@ -1,23 +1,37 @@
-import Image from 'next/image'
+'use client'
+
+import { useLanguage } from '../contexts/LanguageContext'
+import SectionReveal from './SectionReveal'
 
 export default function Story({id}: { id?: string }) {
+    const { t } = useLanguage()
+
     return (
         <section id={id} className="pt-24 py-16 relative text-white">
             <div className="container mx-auto px-4">
-                <div className="bg-black bg-opacity-50 p-8 rounded-lg">
-                    <h2 className="text-3xl font-bold text-center mb-8">My Story</h2>
+                <div className="bg-black bg-opacity-80 p-8 rounded-lg shadow-xl backdrop-blur-sm">
+                    <SectionReveal animation="slide-up" className="mb-8">
+                        <h2 className="text-3xl font-bold text-center">{t('title', 'story')}</h2>
+                    </SectionReveal>
+                    
                     <div className="max-w-3xl mx-auto text-center">
-                        <p className="text-gray-300 font-bold mb-6 text-xl">
-                            Stoyanov Guitars began as a passion project by Peter Stoyanov, combining his love for music and craftsmanship.
-                            Each guitar is handcrafted with care, blending tradition with modern innovation to create unique instruments
-                            that inspire creativity.</p>
-                        <p className="text-gray-300 font-bold text-xl">
-                            Built from premium materials and designed with precision, Stoyanov Guitars offer exceptional sound,
-                            comfort, and aesthetics. From a small workshop to a growing brand, these guitars reflect individuality
-                            and a deep connection to music.</p>
-                        <p className="text-gray-100 font-bold mt-6 italic text-xl">
-                            "Every instrument has a story, waiting to be completed by you."
-                        </p>
+                        <SectionReveal animation="fade-in" delay={200}>
+                            <p className="text-white font-bold mb-6 text-xl">
+                                {t('p1', 'story')}
+                            </p>
+                        </SectionReveal>
+                        
+                        <SectionReveal animation="fade-in" delay={400}>
+                            <p className="text-white font-bold text-xl">
+                                {t('p2', 'story')}
+                            </p>
+                        </SectionReveal>
+                        
+                        <SectionReveal animation="slide-up" delay={600} className="mt-6">
+                            <p className="text-white font-bold italic text-xl animate-pulse-subtle">
+                                {t('quote', 'story')}
+                            </p>
+                        </SectionReveal>
                     </div>
                 </div>
             </div>

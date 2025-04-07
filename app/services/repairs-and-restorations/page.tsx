@@ -1,17 +1,17 @@
-import { Metadata } from 'next'
+'use client'
+
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import ServiceDetailsWrapper from '../../components/ServiceDetailsWrapper'
 import { services } from '../../data/services'
-import { generateMetadata as baseGenerateMetadata } from '../../lib/metadata'
-
-export const metadata: Metadata = baseGenerateMetadata('Repairs and Restorations', 'Bring your beloved instruments back to life with expert repair and restoration services.')
+import { useLanguage } from '../../contexts/LanguageContext'
 
 export default function RepairsAndRestorationsPage() {
+  const { t } = useLanguage()
   const service = services.find(s => s.id === 'repairs-and-restorations')
 
   if (!service) {
-    return <div>Service not found</div>
+    return <div className="container mx-auto px-4 py-16 text-center text-white">{t('serviceNotFound', 'services')}</div>
   }
 
   const serviceData = {
