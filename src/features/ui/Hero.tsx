@@ -19,7 +19,7 @@ export default function Hero({id}: { id?: string }) {
             <div className="container mx-auto px-4">
                 <div className="bg-black bg-opacity-50 p-8 rounded-lg backdrop-blur-sm">
                     <Section 
-                        animation="bounce" 
+                        animation="zoom-in" 
                         className="transition-all duration-700"
                     >
                         <Image

@@ -45,7 +45,15 @@ export default function ServiceDetails({
   
   // Get service translations
   const serviceTranslationPath = `details.${id}`;
-  const serviceTranslation = t(serviceTranslationPath, 'services') as Record<string, any> || {};
+  let serviceTranslation: Record<string, any> = {};
+  try {
+    const translationResult = t(serviceTranslationPath, 'services');
+    if (translationResult && translationResult.startsWith('{') && translationResult.endsWith('}')) {
+      serviceTranslation = JSON.parse(translationResult);
+    }
+  } catch (e) {
+    console.warn('Failed to parse service translations', e);
+  }
   
   // Get translated values with fallbacks
   const translatedName = serviceTranslation.name || name;

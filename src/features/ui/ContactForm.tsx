@@ -163,7 +163,7 @@ export default function ContactForm({ id }: ContactFormProps) {
           </div>
         </Section>
         
-        <Section animation="bounce" delay={600}>
+        <Section animation="zoom-in" delay={600}>
           <button
             type="submit"
             disabled={status.submitting}

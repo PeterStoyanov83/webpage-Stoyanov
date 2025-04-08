@@ -28,7 +28,7 @@ export default function ServicesList({ id }: { id?: string }) {
                   <div className="bg-gray-800 bg-opacity-90 rounded-lg overflow-hidden shadow-lg hover-card border border-gray-700 h-full">
                     <div className="p-6 flex flex-col h-full">
                       <Section 
-                        animation="bounce"
+                        animation="zoom-in"
                         delay={300 + (100 * index)}
                         className="flex justify-center mb-4"
                       >

@@ -18,14 +18,14 @@ export default function GuitarsList({ id }: GuitarsListProps) {
       <div className="container mx-auto px-4">
         <div className="bg-black bg-opacity-80 backdrop-blur-sm p-8 rounded-lg shadow-xl">
           <Section animation="slide-up" className="mb-12">
-            <h2 className="text-3xl font-bold text-center text-white">{t('title', 'guitars')}</h2>
+            <h2 className="text-3xl font-bold text-center text-white">{typeof t('title', 'guitars') === 'string' ? t('title', 'guitars') : 'Guitars'}</h2>
           </Section>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {guitars.map((guitar, index) => (
               <Section 
                 key={guitar.id}
-                animation="scale" 
+                animation="zoom-in" 
                 delay={150 * index}
                 threshold={0.1}
               >
@@ -42,10 +42,10 @@ export default function GuitarsList({ id }: GuitarsListProps) {
                     </div>
                     <div className="p-4">
                       <h3 className="text-xl font-semibold mb-2 text-white">
-                        {(t(`${guitar.id}`, 'guitars_data') as any)?.name || guitar.name}
+                        {guitar.name}
                       </h3>
                       <p className="text-white">
-                        {(t(`${guitar.id}`, 'guitars_data') as any)?.shortDescription || guitar.shortDescription}
+                        {guitar.shortDescription}
                       </p>
                     </div>
                   </div>

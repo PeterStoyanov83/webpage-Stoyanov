@@ -26,7 +26,15 @@ export default function GuitarDetails({ guitar }: GuitarDetailsProps) {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   
   // Get guitar translations
-  const guitarTranslations = t(`${guitar.id}`, 'guitars_data') as Record<string, any> || {};
+  let guitarTranslations: Record<string, any> = {};
+  try {
+    const translationResult = t(`${guitar.id}`, 'guitars_data');
+    if (translationResult && translationResult.startsWith('{') && translationResult.endsWith('}')) {
+      guitarTranslations = JSON.parse(translationResult);
+    }
+  } catch (e) {
+    console.warn('Failed to parse guitar translations', e);
+  }
 
   return (
     <div className="container mx-auto px-4 py-16 pt-32 pb-24">

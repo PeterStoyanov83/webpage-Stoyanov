@@ -6,7 +6,7 @@ import type { Language } from '../../../app/translations';
 interface LanguageState {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string, namespace?: string) => string | Record<string, any>;
+  t: (key: string, namespace?: string) => string;
 }
 
 /**
@@ -24,7 +24,7 @@ export const useLanguageStore = create<LanguageState>()(
       
       t: (key: string, namespace?: string) => {
         const { language } = get();
-        const translation = translations[language];
+        const translation = translations[language] as any;
         
         if (!namespace) {
           // Split the key by dots to traverse nested objects
@@ -39,7 +39,7 @@ export const useLanguageStore = create<LanguageState>()(
               
               // Fallback to English if key doesn't exist in current language
               if (language !== 'en') {
-                let englishResult = translations.en;
+                let englishResult: any = translations.en as any;
                 for (const k of keys) {
                   if (englishResult && typeof englishResult === 'object' && k in englishResult) {
                     englishResult = englishResult[k];
@@ -47,14 +47,14 @@ export const useLanguageStore = create<LanguageState>()(
                     return key; // Return the key itself as last resort
                   }
                 }
-                return englishResult;
+                return typeof englishResult === 'string' ? englishResult : key;
               }
               
               return key; // Return the key itself as last resort
             }
           }
           
-          return result;
+          return typeof result === 'string' ? result : JSON.stringify(result);
         }
         
         // Handle namespaced keys
@@ -70,7 +70,7 @@ export const useLanguageStore = create<LanguageState>()(
               
               // Fallback to English
               if (language !== 'en') {
-                let englishResult = translations.en[namespace];
+                let englishResult: any = (translations.en as any)[namespace];
                 for (const k of keys) {
                   if (englishResult && typeof englishResult === 'object' && k in englishResult) {
                     englishResult = englishResult[k];
@@ -78,14 +78,14 @@ export const useLanguageStore = create<LanguageState>()(
                     return key; // Return the key itself as last resort
                   }
                 }
-                return englishResult;
+                return typeof englishResult === 'string' ? englishResult : key;
               }
               
               return key; // Return the key itself as last resort
             }
           }
           
-          return result;
+          return typeof result === 'string' ? result : JSON.stringify(result);
         }
         
         console.warn(`Namespace not found: ${namespace} in language: ${language}`);
