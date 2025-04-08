@@ -27,11 +27,11 @@ export default function GuitarDetails({ guitar }: GuitarDetailsProps) {
     if (modalOpen || videoModalOpen) {
       document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = ''
     }
     
     return () => {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = ''
     }
   }, [modalOpen, videoModalOpen])
 
@@ -50,6 +50,20 @@ export default function GuitarDetails({ guitar }: GuitarDetailsProps) {
   
   const closeVideoModal = () => {
     setVideoModalOpen(false)
+  }
+  
+  // Close modal when clicking outside the content
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeModal()
+    }
+  }
+  
+  // Close video modal when clicking outside the content
+  const handleVideoOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeVideoModal()
+    }
   }
 
   // Handle keyboard navigation and escape
@@ -184,112 +198,127 @@ export default function GuitarDetails({ guitar }: GuitarDetailsProps) {
 
       {/* Modal for full-size images */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90" onClick={closeModal}>
-          <div className="relative max-w-7xl max-h-screen p-4">
+        <div
+          className="fixed inset-0 z-[9999] bg-black/90 grid place-items-center w-full h-full"
+          onClick={handleOverlayClick}
+          style={{
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)' /* For Safari */
+          }}
+        >
+          <div 
+            className="bg-black/90 rounded-lg overflow-auto w-[95%] sm:w-[90%] max-w-4xl max-h-[95vh] sm:max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
             <button 
-              className="absolute top-4 right-4 z-10 bg-black bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-colors"
-              onClick={(e) => {
-                e.stopPropagation()
-                closeModal()
-              }}
+              onClick={closeModal}
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-black/70 text-white hover:bg-black/90 p-1.5 sm:p-2 rounded-full z-50"
+              aria-label="Close"
             >
-              <X size={24} />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
-            <div className="relative" onClick={(e) => e.stopPropagation()}>
-              <BlurImage 
-                src={modalImage} 
-                alt={guitar.name}
-                width={1200}
-                height={800}
-                className="max-h-[90vh] w-auto object-contain"
-                sizes="100vw"
-              />
-
-              <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2">
-                {guitar.images.map((img, index) => (
-                  <button
-                    key={index}
-                    className={`w-3 h-3 rounded-full ${modalImage === img ? 'bg-white' : 'bg-gray-500'}`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setModalImage(img)
-                    }}
-                  />
-                ))}
+            <div className="flex flex-col">
+              {/* Full image */}
+              <div className="flex justify-center items-center p-2 sm:p-4" style={{ height: 'min(80vh, 80vw)' }}>
+                <BlurImage 
+                  src={modalImage} 
+                  alt={guitar.name}
+                  width={1200}
+                  height={800}
+                  className="object-contain max-w-full max-h-full"
+                  sizes="100vw"
+                />
               </div>
-              
-              <div className="absolute inset-y-0 left-4 flex items-center">
+
+              {/* Navigation buttons */}
+              <div className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2">
                 <button 
-                  className="bg-black bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-colors"
+                  className="bg-black/70 text-white hover:bg-black/90 p-2 sm:p-3 rounded-full shadow-lg backdrop-blur-sm w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center"
                   onClick={(e) => {
                     e.stopPropagation()
                     const currentIndex = guitar.images.findIndex(img => img === modalImage)
                     const prevIndex = (currentIndex - 1 + guitar.images.length) % guitar.images.length
                     setModalImage(guitar.images[prevIndex])
                   }}
+                  aria-label="Previous image"
                 >
-                  &larr;
+                  <span className="text-xl sm:text-2xl">&larr;</span>
                 </button>
               </div>
               
-              <div className="absolute inset-y-0 right-4 flex items-center">
+              <div className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2">
                 <button 
-                  className="bg-black bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-colors"
+                  className="bg-black/70 text-white hover:bg-black/90 p-2 sm:p-3 rounded-full shadow-lg backdrop-blur-sm w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center"
                   onClick={(e) => {
                     e.stopPropagation()
                     const currentIndex = guitar.images.findIndex(img => img === modalImage)
                     const nextIndex = (currentIndex + 1) % guitar.images.length
                     setModalImage(guitar.images[nextIndex])
                   }}
+                  aria-label="Next image"
                 >
-                  &rarr;
+                  <span className="text-xl sm:text-2xl">&rarr;</span>
                 </button>
+              </div>
+
+              {/* Pagination dots */}
+              <div className="flex justify-center gap-1 sm:gap-2 py-2 sm:py-4">
+                {guitar.images.map((img, index) => (
+                  <button
+                    key={index}
+                    className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${modalImage === img ? 'bg-white' : 'bg-gray-500'}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setModalImage(img)
+                    }}
+                    aria-label={`View image ${index + 1}`}
+                  />
+                ))}
               </div>
             </div>
           </div>
         </div>
       )}
       
-      {/* Modal for video - positioned relative to viewport */}
+      {/* Modal for video */}
       {videoModalOpen && guitar.video && (
-        <div 
-          className="fixed inset-0 z-[999] bg-black bg-opacity-90 flex items-center justify-center" 
-          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
-          onClick={closeVideoModal}
+        <div
+          className="fixed inset-0 z-[9999] bg-black/90 grid place-items-center w-full h-full"
+          onClick={handleVideoOverlayClick}
+          style={{
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)' /* For Safari */
+          }}
         >
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000]">
+          <div 
+            className="bg-black/90 rounded-lg overflow-auto w-[95%] sm:w-[90%] max-w-4xl max-h-[95vh] sm:max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
             <button 
-              className="absolute top-4 right-4 z-10 bg-black bg-opacity-70 text-white p-2 rounded-full hover:bg-opacity-100 transition-effect"
-              onClick={(e) => {
-                e.stopPropagation()
-                closeVideoModal()
-              }}
+              onClick={closeVideoModal}
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-black/70 text-white hover:bg-black/90 p-1.5 sm:p-2 rounded-full z-50"
+              aria-label="Close video"
             >
-              <X size={24} />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             
-            {/* Instagram video container */}
-            <div 
-              className="instagram-embed rounded-lg overflow-hidden shadow-xl" 
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                width: '600px',
-                height: '650px',
-                maxWidth: 'calc(100vw - 40px)',
-                maxHeight: 'calc(100vh - 80px)'
-              }}
-            >
-              <iframe 
-                src={guitar.video}
-                className="w-full h-full"
-                title={`${guitar.name} video`}
-                frameBorder="0"
-                scrolling="no"
-                allowTransparency={true}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            {/* Video container */}
+            <div className="w-full p-2 sm:p-4 flex items-center justify-center">
+              <div className="w-full aspect-video" style={{ maxHeight: 'calc(95vh - 100px)' }}>
+                <iframe 
+                  src={guitar.video}
+                  className="w-full h-full rounded-md"
+                  title={`${guitar.name} video`}
+                  frameBorder="0"
+                  scrolling="no"
+                  allowTransparency={true}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             </div>
           </div>
         </div>

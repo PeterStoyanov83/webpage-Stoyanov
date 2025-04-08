@@ -5,6 +5,8 @@ import { LanguageProvider } from './contexts/LanguageContext'
 import LoadingOverlay from './components/LoadingOverlay'
 import NavigationEvents from './lib/navigation-events'
 import { Suspense } from 'react'
+import Header from './components/Header'
+import BackToTop from './components/BackToTop'
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] }) // Added cyrillic subset for Bulgarian
 
@@ -36,9 +38,11 @@ export default function RootLayout({
             <Suspense fallback={null}>
               <LoadingOverlay />
             </Suspense>
+            <Header />
             <div className="page-transition-enter page-transition-enter-active">
               {children}
             </div>
+            <BackToTop />
           </LanguageProvider>
         </div>
       </body>

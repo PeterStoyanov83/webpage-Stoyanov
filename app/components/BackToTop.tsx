@@ -37,7 +37,7 @@ export default function BackToTop() {
       className={`fixed right-6 bottom-6 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-110 z-50 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
       }`}
-      aria-label={t('backToTop', 'navigation')}
+      aria-label={t('backToTop', 'nav')}
     >
       <svg 
         xmlns="http://www.w3.org/2000/svg" 

@@ -1,9 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Dialog, DialogContent, DialogTitle } from "../../components/ui/dialog"
 import { X } from 'lucide-react'
 import { Hammer, Wrench, Zap } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -29,6 +28,48 @@ export default function ServiceDetails({ id, name, images, shortDescription, lon
   const { t, language } = useLanguage()
   const [selectedImage, setSelectedImage] = useState(images[0])
   const [isImageOpen, setIsImageOpen] = useState(false)
+  
+  // Close modal when clicking outside the content
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setIsImageOpen(false)
+    }
+  }
+  
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isImageOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isImageOpen])
+  
+  // Handle keyboard navigation and escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isImageOpen) {
+        if (e.key === 'Escape') {
+          setIsImageOpen(false)
+        } else if (e.key === 'ArrowRight') {
+          const currentIndex = images.findIndex(img => img === selectedImage)
+          const nextIndex = (currentIndex + 1) % images.length
+          setSelectedImage(images[nextIndex])
+        } else if (e.key === 'ArrowLeft') {
+          const currentIndex = images.findIndex(img => img === selectedImage)
+          const prevIndex = (currentIndex - 1 + images.length) % images.length
+          setSelectedImage(images[prevIndex])
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isImageOpen, selectedImage, images])
 
   const Icon = iconMap[iconName as keyof typeof iconMap]
   
@@ -138,28 +179,90 @@ export default function ServiceDetails({ id, name, images, shortDescription, lon
       </div>
 
       {/* Image Modal */}
-       <Dialog open={isImageOpen} onOpenChange={setIsImageOpen}>
-                <DialogContent className="p-0 w-auto max-w-[95vw] max-h-[95vh] overflow-hidden rounded-lg">
-                    <DialogTitle className="sr-only">{translatedName}</DialogTitle>
-                    <div className="relative rounded-lg overflow-hidden">
-                        <Image
-                            src={selectedImage}
-                            alt={translatedName}
-                            width={1200}
-                            height={800}
-                            className="w-full h-auto max-h-[95vh] object-contain rounded-lg"
-                            priority
-                        />
-                        <button
-                            onClick={() => setIsImageOpen(false)}
-                            className="absolute top-2 right-2 p-1 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white rounded-full bg-black/50"
-                            aria-label="Close"
-                        >
-                            <X className="h-6 w-6" />
-                        </button>
-                    </div>
-                </DialogContent>
-            </Dialog>
+      {isImageOpen && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/90 grid place-items-center w-full h-full"
+          onClick={handleOverlayClick}
+          style={{
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)' /* For Safari */
+          }}
+        >
+          <div 
+            className="bg-black/90 rounded-lg overflow-auto w-[95%] sm:w-[90%] max-w-4xl max-h-[95vh] sm:max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button 
+              onClick={() => setIsImageOpen(false)}
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-black/70 text-white hover:bg-black/90 p-1.5 sm:p-2 rounded-full z-50"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+
+            <div className="flex flex-col">
+              {/* Full image */}
+              <div className="flex justify-center items-center p-2 sm:p-4" style={{ height: 'min(80vh, 80vw)' }}>
+                <Image
+                  src={selectedImage}
+                  alt={translatedName}
+                  width={1200}
+                  height={800}
+                  className="object-contain max-w-full max-h-full"
+                  priority
+                />
+              </div>
+
+              {/* Navigation buttons */}
+              <div className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2">
+                <button 
+                  className="bg-black/70 text-white hover:bg-black/90 p-2 sm:p-3 rounded-full shadow-lg backdrop-blur-sm w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    const currentIndex = images.findIndex(img => img === selectedImage)
+                    const prevIndex = (currentIndex - 1 + images.length) % images.length
+                    setSelectedImage(images[prevIndex])
+                  }}
+                  aria-label="Previous image"
+                >
+                  <span className="text-xl sm:text-2xl">&larr;</span>
+                </button>
+              </div>
+              
+              <div className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2">
+                <button 
+                  className="bg-black/70 text-white hover:bg-black/90 p-2 sm:p-3 rounded-full shadow-lg backdrop-blur-sm w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    const currentIndex = images.findIndex(img => img === selectedImage)
+                    const nextIndex = (currentIndex + 1) % images.length
+                    setSelectedImage(images[nextIndex])
+                  }}
+                  aria-label="Next image"
+                >
+                  <span className="text-xl sm:text-2xl">&rarr;</span>
+                </button>
+              </div>
+
+              {/* Pagination dots */}
+              <div className="flex justify-center gap-1 sm:gap-2 py-2 sm:py-4">
+                {images.map((img, index) => (
+                  <button
+                    key={index}
+                    className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${selectedImage === img ? 'bg-white' : 'bg-gray-500'}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedImage(img)
+                    }}
+                    aria-label={`View image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
