@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 import SectionReveal from './SectionReveal'
 
@@ -10,79 +9,6 @@ interface ContactFormProps {
 
 export default function ContactForm({ id }: ContactFormProps) {
   const { t } = useLanguage()
-  const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    message: '',
-    file: null as File | null
-  })
-  const [status, setStatus] = useState({
-    submitting: false,
-    submitted: false,
-    success: false,
-    message: ''
-  })
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormState({
-      ...formState,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormState({
-        ...formState,
-        file: e.target.files[0]
-      })
-    }
-  }
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setStatus({ ...status, submitting: true })
-
-    const formData = new FormData()
-    formData.append('name', formState.name)
-    formData.append('email', formState.email)
-    formData.append('message', formState.message)
-    if (formState.file) {
-      formData.append('file', formState.file)
-    }
-
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        body: formData
-      })
-
-      const data = await response.json()
-      
-      setStatus({
-        submitting: false,
-        submitted: true,
-        success: data.success,
-        message: data.message
-      })
-
-      if (data.success) {
-        setFormState({
-          name: '',
-          email: '',
-          message: '',
-          file: null
-        })
-      }
-    } catch (error) {
-      setStatus({
-        submitting: false,
-        submitted: true,
-        success: false,
-        message: t('errorSubmitting', 'contactForm') as string
-      })
-    }
-  }
 
   return (
     <div id={id} className="bg-white shadow-xl rounded-lg p-8 max-w-md mx-auto my-12 hover-card">
@@ -90,89 +16,64 @@ export default function ContactForm({ id }: ContactFormProps) {
         <h2 className="text-3xl font-bold mb-6 text-center">{t('contactUs', 'contactForm')}</h2>
       </SectionReveal>
       
-      {status.submitted && (
-        <div className={`mb-4 p-3 rounded ${status.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} animate-scale`}>
-          {status.message}
-        </div>
-      )}
-      
-      <form onSubmit={handleSubmit}>
+      <div className="space-y-6">
         <SectionReveal animation="slide-up" delay={200}>
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
-              {t('name', 'contactForm')}
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formState.name}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400"
-            />
+          <div className="flex items-center p-3 rounded-md border border-gray-200 hover:border-blue-400 transition-all">
+            <svg className="w-6 h-6 text-[#1877F2] mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.001 2.002c-5.522 0-9.999 4.477-9.999 9.999 0 4.99 3.656 9.126 8.437 9.879v-6.988h-2.54v-2.891h2.54V9.798c0-2.508 1.493-3.891 3.776-3.891 1.094 0 2.24.195 2.24.195v2.459h-1.264c-1.24 0-1.628.772-1.628 1.563v1.875h2.771l-.443 2.891h-2.328v6.988C18.344 21.129 22 16.992 22 12.001c0-5.522-4.477-9.999-9.999-9.999z"/>
+            </svg>
+            <div>
+              <h3 className="font-semibold text-gray-800">Facebook</h3>
+              <a href="https://www.facebook.com/Stoyanoffguitars/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                facebook.com/Stoyanoffguitars
+              </a>
+            </div>
           </div>
         </SectionReveal>
         
         <SectionReveal animation="slide-up" delay={300}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
-              {t('email', 'contactForm')}
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formState.email}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400"
-            />
+          <div className="flex items-center p-3 rounded-md border border-gray-200 hover:border-blue-400 transition-all">
+            <svg className="w-6 h-6 text-[#E4405F] mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465.668.25 1.231.585 1.786 1.14.568.568.902 1.132 1.152 1.8.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.903 4.903 0 01-1.153 1.8c-.568.568-1.132.902-1.8 1.152-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.903 4.903 0 01-1.8-1.153 4.903 4.903 0 01-1.152-1.8c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.903 4.903 0 011.153-1.8A4.903 4.903 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/>
+            </svg>
+            <div>
+              <h3 className="font-semibold text-gray-800">Instagram</h3>
+              <a href="https://www.instagram.com/stoyanovguitars/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                instagram.com/stoyanovguitars
+              </a>
+            </div>
           </div>
         </SectionReveal>
         
         <SectionReveal animation="slide-up" delay={400}>
-          <div className="mb-4">
-            <label htmlFor="message" className="block text-gray-700 font-medium mb-2">
-              {t('message', 'contactForm')}
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              value={formState.message}
-              onChange={handleChange}
-              required
-              rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400"
-            ></textarea>
+          <div className="flex items-center p-3 rounded-md border border-gray-200 hover:border-blue-400 transition-all">
+            <svg className="w-6 h-6 text-[#D14836] mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+            </svg>
+            <div>
+              <h3 className="font-semibold text-gray-800">Email</h3>
+              <a href="mailto:peterstoyanov83@gmail.com" className="text-blue-600 hover:underline">
+                peterstoyanov83@gmail.com
+              </a>
+            </div>
           </div>
         </SectionReveal>
         
         <SectionReveal animation="slide-up" delay={500}>
-          <div className="mb-4">
-            <label htmlFor="file" className="block text-gray-700 font-medium mb-2">
-              {t('attachFile', 'contactForm')}
-            </label>
-            <input
-              type="file"
-              id="file"
-              name="file"
-              onChange={handleFileChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400"
-            />
+          <div className="flex items-center p-3 rounded-md border border-gray-200 hover:border-blue-400 transition-all">
+            <svg className="w-6 h-6 text-[#25D366] mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            <div>
+              <h3 className="font-semibold text-gray-800">Phone</h3>
+              <a href="tel:+359877150945" className="text-blue-600 hover:underline block">
+                +359 877 15 09 45
+              </a>
+              <span className="text-sm text-gray-600">Available on Viber, Telegram, and WhatsApp</span>
+            </div>
           </div>
         </SectionReveal>
-        
-        <SectionReveal animation="bounce" delay={600}>
-          <button
-            type="submit"
-            disabled={status.submitting}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-blue-300 transform hover:scale-[1.02] transition-all duration-300 font-medium text-lg"
-          >
-            {status.submitting ? t('sending', 'contactForm') : t('send', 'contactForm')}
-          </button>
-        </SectionReveal>
-      </form>
+      </div>
     </div>
   )
 }
