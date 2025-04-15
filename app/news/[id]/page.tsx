@@ -1,34 +1,15 @@
-import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
+'use client'
+
+import { useParams, notFound } from 'next/navigation'
 import NewsDetail from '../../components/NewsDetail'
 import { newsItems } from '../../data/news'
-import { generateMetadata as createMetadata } from '../../lib/metadata'
 
-// Generate static params at build time
-export async function generateStaticParams() {
-  return newsItems.map((item) => ({
-    id: item.id,
-  }))
-}
-
-// Generate metadata for each news page
-export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
-  const newsItem = newsItems.find(item => item.id === params.id)
+export default function NewsItemPage() {
+  // Use the useParams hook in a client component
+  const params = useParams()
+  const id = Array.isArray(params.id) ? params.id[0] : params.id?.toString()
   
-  if (!newsItem) {
-    return createMetadata('News Not Found', 'The requested news article could not be found.')
-  }
-  
-  return createMetadata(
-    newsItem.title,
-    newsItem.summary,
-    [...newsItem.tags, 'news', 'guitar news', 'luthier news'],
-    newsItem.imageUrl
-  )
-}
-
-export default function NewsItemPage({ params }: { params: any }) {
-  const newsItem = newsItems.find(item => item.id === params.id)
+  const newsItem = newsItems.find(item => item.id === id)
   
   if (!newsItem) {
     notFound()

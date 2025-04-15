@@ -22,18 +22,8 @@ export default function GuitarDetails({ guitar }: GuitarDetailsProps) {
   // Get guitar translations
   const guitarTranslations = t(`${guitar.id}`, 'guitars_data') as Record<string, any> || {}
 
-  // Lock body scroll when any modal is open
-  useEffect(() => {
-    if (modalOpen || videoModalOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [modalOpen, videoModalOpen])
+  // We're removing the body scroll lock to allow scrolling like in the NewsDetail component
+  // This fixes the scrolling issue
 
   const openModal = (img: string) => {
     setModalImage(img)
@@ -215,125 +205,99 @@ export default function GuitarDetails({ guitar }: GuitarDetailsProps) {
         </div>
       </div>
 
-      {/* Modal for full-size images */}
+      {/* Modal for full-size images - updated to match NewsDetail implementation */}
       {modalOpen && (
-        <div
-          className="fixed inset-0 z-[9999] bg-black/90 grid place-items-center w-full h-full"
-          onClick={handleOverlayClick}
-          style={{
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)' /* For Safari */
-          }}
-        >
-          <div 
-            className="bg-black/70 rounded-xl overflow-auto w-[95%] sm:w-[90%] max-w-4xl max-h-[95vh] sm:max-h-[90vh] border border-guitar-gold/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center" onClick={() => closeModal()}>
+          <div className="absolute top-4 right-4 z-10">
             <button 
-              onClick={closeModal}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-black/70 text-guitar-gold hover:text-white hover:bg-black p-2 rounded-full z-50 backdrop-blur-sm border border-guitar-gold/20 transition-all duration-300"
+              className="bg-black/70 text-white hover:bg-black/90 p-2 rounded-full shadow-lg backdrop-blur-sm"
+              onClick={() => closeModal()}
               aria-label="Close"
             >
-              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              <X className="w-6 h-6" />
             </button>
-
-            <div className="flex flex-col">
-              {/* Full image */}
-              <div className="flex justify-center items-center p-2 sm:p-4" style={{ height: 'min(80vh, 80vw)' }}>
-                <BlurImage 
-                  src={modalImage} 
-                  alt={guitar.name}
-                  width={1200}
-                  height={800}
-                  className="object-contain max-w-full max-h-full"
-                  sizes="100vw"
+          </div>
+          
+          <div className="relative max-w-4xl max-h-[80vh] w-full p-4" onClick={(e) => e.stopPropagation()}>
+            <div className="relative h-full flex items-center justify-center">
+              <BlurImage
+                src={modalImage}
+                alt={guitar.name}
+                width={1200}
+                height={800}
+                className="object-contain max-h-[70vh] w-auto max-w-full mx-auto"
+                sizes="100vw"
+                priority
+              />
+            </div>
+            
+            {/* Navigation buttons */}
+            <button
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white hover:bg-black/90 p-3 rounded-full shadow-lg backdrop-blur-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                const currentIndex = guitar.images.findIndex(img => img === modalImage);
+                const prevIndex = (currentIndex - 1 + guitar.images.length) % guitar.images.length;
+                setModalImage(guitar.images[prevIndex]);
+              }}
+              aria-label="Previous image"
+            >
+              <span className="text-xl">&larr;</span>
+            </button>
+            
+            <button
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white hover:bg-black/90 p-3 rounded-full shadow-lg backdrop-blur-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                const currentIndex = guitar.images.findIndex(img => img === modalImage);
+                const nextIndex = (currentIndex + 1) % guitar.images.length;
+                setModalImage(guitar.images[nextIndex]);
+              }}
+              aria-label="Next image"
+            >
+              <span className="text-xl">&rarr;</span>
+            </button>
+            
+            {/* Pagination dots */}
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 py-2">
+              {guitar.images.map((img, index) => (
+                <button
+                  key={index}
+                  className={`w-3 h-3 rounded-full ${
+                    modalImage === img ? 'bg-guitar-gold' : 'bg-gray-500'
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setModalImage(img);
+                  }}
+                  aria-label={`View image ${index + 1}`}
                 />
-              </div>
-
-              {/* Navigation buttons */}
-              <div className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2">
-                <button 
-                  className="bg-black/60 text-guitar-gold hover:text-white p-3 rounded-full shadow-lg backdrop-blur-sm w-12 h-12 flex items-center justify-center border border-guitar-gold/20 hover:border-guitar-gold/40 transition-all duration-300"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    const currentIndex = guitar.images.findIndex(img => img === modalImage)
-                    const prevIndex = (currentIndex - 1 + guitar.images.length) % guitar.images.length
-                    setModalImage(guitar.images[prevIndex])
-                  }}
-                  aria-label="Previous image"
-                >
-                  <span className="text-xl">&larr;</span>
-                </button>
-              </div>
-              
-              <div className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2">
-                <button 
-                  className="bg-black/60 text-guitar-gold hover:text-white p-3 rounded-full shadow-lg backdrop-blur-sm w-12 h-12 flex items-center justify-center border border-guitar-gold/20 hover:border-guitar-gold/40 transition-all duration-300"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    const currentIndex = guitar.images.findIndex(img => img === modalImage)
-                    const nextIndex = (currentIndex + 1) % guitar.images.length
-                    setModalImage(guitar.images[nextIndex])
-                  }}
-                  aria-label="Next image"
-                >
-                  <span className="text-xl">&rarr;</span>
-                </button>
-              </div>
-
-              {/* Pagination dots */}
-              <div className="flex justify-center gap-2 py-4">
-                {guitar.images.map((img, index) => (
-                  <button
-                    key={index}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 border ${
-                      modalImage === img 
-                        ? 'bg-guitar-gold border-guitar-gold scale-110' 
-                        : 'bg-gray-500/40 border-gray-500/40 hover:bg-guitar-gold/50 hover:border-guitar-gold/50'
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setModalImage(img)
-                    }}
-                    aria-label={`View image ${index + 1}`}
-                  />
-                ))}
-              </div>
+              ))}
             </div>
           </div>
         </div>
       )}
       
-      {/* Modal for video */}
+      {/* Modal for video - updated to match NewsDetail style */}
       {videoModalOpen && guitar.video && (
-        <div
-          className="fixed inset-0 z-[9999] bg-black/90 grid place-items-center w-full h-full"
-          onClick={handleVideoOverlayClick}
-          style={{
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)' /* For Safari */
-          }}
-        >
-          <div 
-            className="bg-black/70 rounded-xl overflow-auto w-[95%] sm:w-[90%] max-w-4xl max-h-[95vh] sm:max-h-[90vh] border border-guitar-gold/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center" onClick={() => closeVideoModal()}>
+          <div className="absolute top-4 right-4 z-10">
             <button 
-              onClick={closeVideoModal}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-black/70 text-guitar-gold hover:text-white hover:bg-black p-2 rounded-full z-50 backdrop-blur-sm border border-guitar-gold/20 transition-all duration-300"
+              className="bg-black/70 text-white hover:bg-black/90 p-2 rounded-full shadow-lg backdrop-blur-sm"
+              onClick={() => closeVideoModal()}
               aria-label="Close video"
             >
-              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              <X className="w-6 h-6" />
             </button>
-            
+          </div>
+          
+          <div className="relative max-w-4xl max-h-[80vh] w-[95%]" onClick={(e) => e.stopPropagation()}>
             {/* Video container */}
-            <div className="w-full p-4 flex items-center justify-center">
-              <div className="w-full aspect-video" style={{ maxHeight: 'calc(95vh - 100px)' }}>
+            <div className="w-full flex items-center justify-center">
+              <div className="w-full aspect-video" style={{ maxHeight: 'calc(80vh - 40px)' }}>
                 <iframe 
                   src={guitar.video}
-                  className="w-full h-full rounded-xl border border-guitar-gold/10"
+                  className="w-full h-full rounded-xl shadow-xl"
                   title={`${guitar.name} video`}
                   frameBorder="0"
                   scrolling="no"

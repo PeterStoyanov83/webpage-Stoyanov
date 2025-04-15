@@ -34,7 +34,7 @@ export default function BlurImage({
           ${className}
         `}
         onLoad={() => setIsLoading(false)}
-        loading="lazy"
+        loading={rest.priority ? undefined : "lazy"}
         sizes={fill ? "100vw" : undefined}
         {...rest}
       />

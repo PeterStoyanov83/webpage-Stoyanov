@@ -1,5 +1,5 @@
 import './globals.css'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { LanguageProvider } from './contexts/LanguageContext'
 import LoadingOverlay from './components/LoadingOverlay'
@@ -7,7 +7,10 @@ import NavigationEvents from './lib/navigation-events'
 import { Suspense } from 'react'
 import Header from './components/Header'
 import BackToTop from './components/BackToTop'
-import { generateMetadata as createMetadata } from './lib/metadata'
+import { generateMetadata as createMetadata, viewport as viewportConfig } from './lib/metadata'
+
+// Export the viewport configuration for Next.js 15+
+export const viewport: Viewport = viewportConfig
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] }) // Added cyrillic subset for Bulgarian
 

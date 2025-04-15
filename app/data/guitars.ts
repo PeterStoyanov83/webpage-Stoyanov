@@ -134,15 +134,15 @@ export const guitars: Guitar[] = [
         }
     },
     {
-        id: 'fretless-bass',
-        name: 'Fretless Bass',
-        image: '/images/guitars/frettless-bass/fretless01.jpg',
+        id: 'ginger-bass',
+        name: 'Ginger Fretless Bass',
+        image: '/images/news/Ginger.png',
         shortDescription: 'An Idea Of Mine Still In Development.',
         images: [
-            '/images/guitars/frettless-bass/fretless01.jpg',
-            '/images/guitars/frettless-bass/fretless02.jpg',
-            '/images/guitars/frettless-bass/fretless03.jpg',
-            '/images/guitars/frettless-bass/fretless04.jpg',
+            '/images/guitars/fretless-bass/fretless01.jpg',
+            '/images/guitars/fretless-bass/fretless02.jpg',
+            '/images/guitars/fretless-bass/fretless03.jpg',
+            '/images/guitars/fretless-bass/fretless04.jpg',
         ],
         description: 'Currently in development, this custom fretless-bass bass represents our venture into the world of' +
             ' bass instruments. Inspired by the Marleaux Diva and featuring a beautiful Koa top sourced from a ' +
@@ -152,14 +152,14 @@ export const guitars: Guitar[] = [
             'provide, while the multiple pickup systems ensure unparalleled versatility.',
         specifications: {
             Body: 'Alder base with Koa top',
-            Neck: 'In development',
+            Neck: 'shisham and pear laminated ',
             Fingerboard: 'Shisham wood - Fretless design',
             Pickups: 'Stingray style humbucker (Electric), Piezo pickups under the saddle (Acoustic)',
-            Electronics: 'Piezo to synth conversion system',
-            Bridge: 'To be determined',
-            Hardware: 'To be determined',
+            Electronics: 'magnetic, and Piezo plus piezo to synth conversion system',
+            Bridge: 'Monorail system',
+            Hardware: 'standard chrome',
             SpecialFeatures: 'Fretless design, 3-in-1 functionality (Electric, Acoustic, Synth)',
-            Construction: 'In progress',
+            Construction: 'neck-through body channel design',
         }
     }
 ]

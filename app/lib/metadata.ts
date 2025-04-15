@@ -10,6 +10,13 @@ const defaultKeywords = [
 
 const defaultImage = 'https://www.stoyanoffguitars.com/images/og-image.jpg' // Update with actual image path
 
+// Viewport export for Next.js 15
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export function generateMetadata(
   title: string, 
   description: string, 
@@ -131,12 +138,7 @@ export function generateMetadata(
       },
     },
     
-    // Viewport settings
-    viewport: {
-      width: 'device-width',
-      initialScale: 1,
-      maximumScale: 5,
-    },
+    // Viewport settings removed - now handled by separate export
     
     // Icons
     icons: {

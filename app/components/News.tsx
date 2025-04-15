@@ -57,18 +57,20 @@ export default function News({ id }: NewsProps) {
                     {/* Hover gradient effect */}
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-guitar-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
                     
-                    <div className="flex flex-col md:flex-row">
+                    <div className="flex flex-col md:flex-row h-full">
                       {/* Image section */}
-                      <div className="relative md:w-2/5 h-48 md:h-full overflow-hidden">
+                      <div className="relative md:w-2/5 h-48 md:h-auto overflow-hidden">
                         {item.imageUrl ? (
                           <>
-                            <Image 
-                              src={item.imageUrl} 
-                              alt={language === 'bg' && item.titleBg ? item.titleBg : item.title}
-                              fill
-                              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 200px"
-                            />
+                            <div className="w-full h-full relative">
+                              <Image 
+                                src={item.imageUrl} 
+                                alt={language === 'bg' && item.titleBg ? item.titleBg : item.title}
+                                fill
+                                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 200px"
+                              />
+                            </div>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-70"></div>
                           </>
                         ) : (

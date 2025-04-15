@@ -36,18 +36,8 @@ export default function ServiceDetails({ id, name, images, shortDescription, lon
     }
   }
   
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (isImageOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isImageOpen])
+  // We're removing the body scroll lock to allow scrolling like in the NewsDetail component
+  // This fixes the scrolling issue
   
   // Handle keyboard navigation and escape
   useEffect(() => {
@@ -196,91 +186,73 @@ export default function ServiceDetails({ id, name, images, shortDescription, lon
         </div>
       </div>
 
-      {/* Image Modal */}
+      {/* Image Modal - updated to match NewsDetail style */}
       {isImageOpen && (
-        <div
-          className="fixed inset-0 z-[9999] bg-black/90 grid place-items-center w-full h-full"
-          onClick={handleOverlayClick}
-          style={{
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)' /* For Safari */
-          }}
-        >
-          <div 
-            className="bg-black/70 rounded-xl overflow-auto w-[95%] sm:w-[90%] max-w-4xl max-h-[95vh] sm:max-h-[90vh] border border-guitar-gold/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center" onClick={() => setIsImageOpen(false)}>
+          <div className="absolute top-4 right-4 z-10">
             <button 
+              className="bg-black/70 text-white hover:bg-black/90 p-2 rounded-full shadow-lg backdrop-blur-sm"
               onClick={() => setIsImageOpen(false)}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-black/70 text-guitar-gold hover:text-white hover:bg-black p-2 rounded-full z-50 backdrop-blur-sm border border-guitar-gold/20 transition-all duration-300"
               aria-label="Close"
             >
-              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              <X className="w-6 h-6" />
             </button>
-
-            <div className="flex flex-col">
-              {/* Full image */}
-              <div className="flex justify-center items-center p-2 sm:p-4" style={{ height: 'min(80vh, 80vw)' }}>
-                <Image
-                  src={selectedImage}
-                  alt={translatedName}
-                  width={1200}
-                  height={800}
-                  className="object-contain max-w-full max-h-full"
-                  priority
+          </div>
+          
+          <div className="relative max-w-4xl max-h-[80vh] w-full p-4" onClick={(e) => e.stopPropagation()}>
+            <div className="relative h-full flex items-center justify-center">
+              <Image
+                src={selectedImage}
+                alt={translatedName}
+                width={1200}
+                height={800}
+                className="object-contain max-h-[70vh] w-auto max-w-full mx-auto"
+                priority
+              />
+            </div>
+            
+            {/* Navigation buttons */}
+            <button
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white hover:bg-black/90 p-3 rounded-full shadow-lg backdrop-blur-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                const currentIndex = images.findIndex(img => img === selectedImage);
+                const prevIndex = (currentIndex - 1 + images.length) % images.length;
+                setSelectedImage(images[prevIndex]);
+              }}
+              aria-label="Previous image"
+            >
+              <span className="text-xl">&larr;</span>
+            </button>
+            
+            <button
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white hover:bg-black/90 p-3 rounded-full shadow-lg backdrop-blur-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                const currentIndex = images.findIndex(img => img === selectedImage);
+                const nextIndex = (currentIndex + 1) % images.length;
+                setSelectedImage(images[nextIndex]);
+              }}
+              aria-label="Next image"
+            >
+              <span className="text-xl">&rarr;</span>
+            </button>
+            
+            {/* Pagination dots */}
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 py-2">
+              {images.map((img, index) => (
+                <button
+                  key={index}
+                  className={`w-3 h-3 rounded-full ${
+                    selectedImage === img ? 'bg-guitar-gold' : 'bg-gray-500'
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImage(img);
+                  }}
+                  aria-label={`View image ${index + 1}`}
                 />
-              </div>
-
-              {/* Navigation buttons */}
-              <div className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2">
-                <button 
-                  className="bg-black/60 text-guitar-gold hover:text-white p-3 rounded-full shadow-lg backdrop-blur-sm w-12 h-12 flex items-center justify-center border border-guitar-gold/20 hover:border-guitar-gold/40 transition-all duration-300"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    const currentIndex = images.findIndex(img => img === selectedImage)
-                    const prevIndex = (currentIndex - 1 + images.length) % images.length
-                    setSelectedImage(images[prevIndex])
-                  }}
-                  aria-label="Previous image"
-                >
-                  <span className="text-xl">&larr;</span>
-                </button>
-              </div>
-              
-              <div className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2">
-                <button 
-                  className="bg-black/60 text-guitar-gold hover:text-white p-3 rounded-full shadow-lg backdrop-blur-sm w-12 h-12 flex items-center justify-center border border-guitar-gold/20 hover:border-guitar-gold/40 transition-all duration-300"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    const currentIndex = images.findIndex(img => img === selectedImage)
-                    const nextIndex = (currentIndex + 1) % images.length
-                    setSelectedImage(images[nextIndex])
-                  }}
-                  aria-label="Next image"
-                >
-                  <span className="text-xl">&rarr;</span>
-                </button>
-              </div>
-
-              {/* Pagination dots */}
-              <div className="flex justify-center gap-2 py-4">
-                {images.map((img, index) => (
-                  <button
-                    key={index}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 border ${
-                      selectedImage === img 
-                        ? 'bg-guitar-gold border-guitar-gold scale-110' 
-                        : 'bg-gray-500/40 border-gray-500/40 hover:bg-guitar-gold/50 hover:border-guitar-gold/50'
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setSelectedImage(img)
-                    }}
-                    aria-label={`View image ${index + 1}`}
-                  />
-                ))}
-              </div>
+              ))}
             </div>
           </div>
         </div>
