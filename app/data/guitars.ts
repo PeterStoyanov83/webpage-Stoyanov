@@ -144,11 +144,11 @@ export const guitars: Guitar[] = [
             '/images/guitars/fretless-bass/fretless03.jpg',
             '/images/guitars/fretless-bass/fretless04.jpg',
         ],
-        description: 'Currently in development, this custom fretless-bass bass represents our venture into the world of' +
+        description: 'Currently in development, this custom fretless bass represents our venture into the world of' +
             ' bass instruments. Inspired by the Marleaux Diva and featuring a beautiful Koa top sourced from a ' +
             'Swiss guitar builder, this bass is designed to be a versatile 3-in-1 instrument. It combines electric, ' +
             'acoustic, and synth capabilities, offering players an incredibly wide range of tonal possibilities. ' +
-            'The fretless-bass design promises to deliver the smooth, singing qualities that only a fretless-bass bass can ' +
+            'The fretless design promises to deliver the smooth, singing qualities that only a fretless bass can ' +
             'provide, while the multiple pickup systems ensure unparalleled versatility.',
         specifications: {
             Body: 'Alder base with Koa top',
