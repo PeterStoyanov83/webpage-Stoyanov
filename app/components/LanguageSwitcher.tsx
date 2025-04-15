@@ -13,23 +13,32 @@ export default function LanguageSwitcher() {
   return (
     <div className="relative">
       <div 
-        className="flex rounded-full bg-gray-800/90 backdrop-filter backdrop-blur-sm p-1 cursor-pointer border border-gray-700"
+        className="flex rounded-full bg-black/30 backdrop-blur-sm p-1 cursor-pointer border border-guitar-gold/20 hover:border-guitar-gold/40 transition-all duration-300 relative"
         onClick={toggleLanguage}
       >
+        {/* Moving background bubble */}
         <div 
-          className={`flex items-center justify-center rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 ${
+          className={`absolute top-1 bottom-1 w-[calc(50%-2px)] rounded-full bg-black/50 border border-guitar-gold/30 transition-all duration-500 ease-in-out shadow-[0_0_5px_rgba(212,175,55,0.15)] z-0 
+            ${language === 'en' ? 'left-1 translate-x-0' : 'left-1 translate-x-[100%]'}`}
+        />
+        
+        {/* English option */}
+        <div 
+          className={`relative z-10 flex items-center justify-center rounded-full px-3 py-1 text-xs tracking-wider font-light transition-colors duration-300 min-w-[32px] ${
             language === 'en' 
-              ? 'bg-blue-600 text-white' 
-              : 'text-gray-300'
+              ? 'text-guitar-gold' 
+              : 'text-white/70 hover:text-white'
           }`}
         >
           EN
         </div>
+        
+        {/* Bulgarian option */}
         <div 
-          className={`flex items-center justify-center rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 ${
+          className={`relative z-10 flex items-center justify-center rounded-full px-3 py-1 text-xs tracking-wider font-light transition-colors duration-300 min-w-[32px] ${
             language === 'bg' 
-              ? 'bg-red-600 text-white' 
-              : 'text-gray-300'
+              ? 'text-guitar-gold' 
+              : 'text-white/70 hover:text-white'
           }`}
         >
           BG

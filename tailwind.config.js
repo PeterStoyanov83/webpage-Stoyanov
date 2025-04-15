@@ -50,6 +50,16 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        guitar: {
+          gold: "#D4AF37",
+          amber: "#FFBF00",
+          copper: "#B87333",
+          silver: "#C0C0C0",
+          mahogany: "#C04000",
+          maple: "#FFDC73",
+          ebony: "#3D2B1F",
+          rosewood: "#5D4037",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

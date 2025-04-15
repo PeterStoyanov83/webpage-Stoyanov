@@ -7,16 +7,15 @@ import NavigationEvents from './lib/navigation-events'
 import { Suspense } from 'react'
 import Header from './components/Header'
 import BackToTop from './components/BackToTop'
+import { generateMetadata as createMetadata } from './lib/metadata'
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] }) // Added cyrillic subset for Bulgarian
 
-export const metadata: Metadata = {
-  title: 'Stoyanov Guitars',
-  description: 'Handcrafted guitars by Peter Stoyanov',
-  icons: {
-    icon: '/favicon.ico',
-  },
-}
+export const metadata: Metadata = createMetadata(
+  'Home', 
+  'Premium custom-made electric and acoustic guitars handcrafted in Bulgaria. Expert repairs, restorations, and guitar modifications with meticulous attention to detail.',
+  ['bespoke guitars', 'luxury guitars', 'custom guitar shop', 'handmade electric guitars', 'european luthier']
+)
 
 export default function RootLayout({
   children,
