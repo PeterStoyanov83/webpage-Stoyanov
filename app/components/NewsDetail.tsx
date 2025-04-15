@@ -65,27 +65,35 @@ export default function NewsDetail({ newsItem }: NewsDetailProps) {
                   </div>
                 </div>
               </div>
-              
-              <div className="relative h-[400px] w-full rounded-xl overflow-hidden shadow-xl mb-10 border border-guitar-gold/10">
-                <Image 
-                  src={newsItem.imageUrl} 
-                  alt={title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1280px) 100vw, 1200px"
-                  priority
-                />
-              </div>
             </div>
           </SectionReveal>
           
-          <SectionReveal animation="fade-in" delay={400}>
-            <div className="prose prose-lg max-w-none text-white/90">
-              {content.split('\n').map((paragraph, index) => (
-                <p key={index} className={`mb-6 ${index === 0 ? 'text-xl font-medium' : ''}`}>
-                  {paragraph.trim()}
-                </p>
-              ))}
+          <SectionReveal animation="fade-in" delay={300}>
+            <div className="flex flex-col lg:flex-row gap-8 mb-10">
+              {/* Image section */}
+              {newsItem.imageUrl && (
+                <div className="lg:w-2/5 flex-shrink-0">
+                  <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden shadow-xl border border-guitar-gold/10">
+                    <Image 
+                      src={newsItem.imageUrl} 
+                      alt={title}
+                      fill
+                      className="object-cover object-center"
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                      priority
+                    />
+                  </div>
+                </div>
+              )}
+              
+              {/* Content section */}
+              <div className={`${newsItem.imageUrl ? 'lg:w-3/5' : 'w-full'} prose prose-lg text-white/90`}>
+                {content.split('\n').map((paragraph, index) => (
+                  <p key={index} className={`mb-6 ${index === 0 ? 'text-xl font-medium' : ''}`}>
+                    {paragraph.trim()}
+                  </p>
+                ))}
+              </div>
             </div>
           </SectionReveal>
         </div>

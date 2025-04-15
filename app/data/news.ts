@@ -28,9 +28,9 @@ export const newsItems: NewsItem[] = [
     {
         id: 'custom-bass-project',
         title: 'Stoyanov Ginger - The Fretless Bass Project is Completed',
-        titleBg: 'Стойанов Джинджър - Проектът фретлес бас е завършен',
+        titleBg: 'Стоянов Джинджър - Проектът фретлес бас е завършен',
         date: '2024-02-15',
-        imageUrl: '/images/guitars/fretless-bass/fretless01.jpg',
+        imageUrl: '/images/news/Ginger.png',
         summary: 'Completing a special custom fretless bass with unique tonal characteristics.',
         summaryBg: 'Завършване на фретлес бас-а с уникални тонални характеристики.',
         content: `

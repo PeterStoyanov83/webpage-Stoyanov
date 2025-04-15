@@ -117,52 +117,64 @@ export default function NewsPage() {
                       {/* Hover gradient effect */}
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-guitar-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
                       
-                      <div className="relative h-48 overflow-hidden">
-                        <Image 
-                          src={item.imageUrl} 
-                          alt={language === 'bg' && item.titleBg ? item.titleBg : item.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-70"></div>
-                        
-                        {/* Date badge */}
-                        <div className="absolute top-3 right-3 bg-black/60 px-3 py-1 rounded-full text-xs text-guitar-gold border border-guitar-gold/20 backdrop-blur-sm">
-                          {format(new Date(item.date), 'dd.MM.yyyy')}
-                        </div>
-                      </div>
-                      
-                      <div className="p-6 relative z-10">
-                        <h3 className="text-xl font-medium mb-3 text-white group-hover:text-guitar-gold transition-colors duration-300">
-                          {language === 'bg' && item.titleBg ? item.titleBg : item.title}
-                        </h3>
-                        <p className="text-white/80 group-hover:text-white text-sm transition-colors duration-300 line-clamp-3">
-                          {language === 'bg' && item.summaryBg ? item.summaryBg : item.summary}
-                        </p>
-                        
-                        <div className="mt-6 flex">
-                          <div className="px-4 py-1.5 rounded-full text-sm text-guitar-gold group-hover:text-white transition-all duration-300 flex items-center">
-                            <span>{t('readMore', 'common') || 'Read More'}</span>
-                            <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      <div className="flex flex-col md:flex-row">
+                        {/* Image section */}
+                        <div className="relative md:w-2/5 h-48 md:h-full overflow-hidden">
+                          {item.imageUrl ? (
+                            <>
+                              <Image 
+                                src={item.imageUrl} 
+                                alt={language === 'bg' && item.titleBg ? item.titleBg : item.title}
+                                fill
+                                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 200px"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-70"></div>
+                            </>
+                          ) : (
+                            <div className="w-full h-full bg-black/50 flex items-center justify-center">
+                              <span className="text-white/50">No image</span>
+                            </div>
+                          )}
+                          
+                          {/* Date badge */}
+                          <div className="absolute top-3 right-3 bg-black/60 px-3 py-1 rounded-full text-xs text-guitar-gold border border-guitar-gold/20 backdrop-blur-sm">
+                            {format(new Date(item.date), 'dd.MM.yyyy')}
                           </div>
                         </div>
-                      </div>
-                      
-                      {/* Tags */}
-                      <div className="px-6 pb-4 flex flex-wrap gap-2">
-                        {item.tags.map(tag => (
-                          <span 
-                            key={tag} 
-                            className={`text-xs px-2 py-1 rounded-full border transition-colors duration-300 ${
-                              selectedTag === tag
-                                ? 'bg-guitar-gold/20 text-white border-guitar-gold/30'
-                                : 'bg-black/40 text-white/70 border-guitar-gold/10'
-                            }`}
-                          >
-                            #{tag}
-                          </span>
-                        ))}
+                        
+                        {/* Content section */}
+                        <div className="md:w-3/5 p-6 relative z-10">
+                          <h3 className="text-xl font-medium mb-3 text-white group-hover:text-guitar-gold transition-colors duration-300">
+                            {language === 'bg' && item.titleBg ? item.titleBg : item.title}
+                          </h3>
+                          <p className="text-white/80 group-hover:text-white text-sm transition-colors duration-300 line-clamp-3">
+                            {language === 'bg' && item.summaryBg ? item.summaryBg : item.summary}
+                          </p>
+                          
+                          <div className="mt-6 flex">
+                            <div className="px-4 py-1.5 rounded-full text-sm text-guitar-gold group-hover:text-white transition-all duration-300 flex items-center">
+                              <span>{t('readMore', 'common') || 'Read More'}</span>
+                              <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                            </div>
+                          </div>
+                          
+                          {/* Tags */}
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {item.tags.map(tag => (
+                              <span 
+                                key={tag} 
+                                className={`text-xs px-2 py-1 rounded-full border transition-colors duration-300 ${
+                                  selectedTag === tag
+                                    ? 'bg-guitar-gold/20 text-white border-guitar-gold/30'
+                                    : 'bg-black/40 text-white/70 border-guitar-gold/10'
+                                }`}
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </Link>
