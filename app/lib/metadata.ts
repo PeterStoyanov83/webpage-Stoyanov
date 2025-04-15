@@ -142,19 +142,28 @@ export function generateMetadata(
     
     // Icons
     icons: {
-      icon: '/favicon.ico',
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/icons/icon.svg', type: 'image/svg+xml' }
+      ],
       shortcut: '/favicon.ico',
-      apple: '/icons/apple-touch-icon.png',
+      apple: [
+        { url: '/icons/apple-touch-icon.png' }
+      ],
       other: [
-        {
-          rel: 'apple-touch-icon',
-          url: '/icons/apple-touch-icon.png',
-        },
         {
           rel: 'mask-icon',
           url: '/icons/safari-pinned-tab.svg',
-          color: '#000000',
+          color: '#D4AF37',
         },
+        {
+          rel: 'manifest',
+          url: '/icons/site.webmanifest',
+        },
+        {
+          rel: 'msapplication-config',
+          url: '/icons/browserconfig.xml',
+        }
       ],
     },
     

@@ -26,7 +26,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html className="scroll-smooth">
+    <html className="scroll-smooth" lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#D4AF37" />
+        <link rel="manifest" href="/icons/site.webmanifest" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="msapplication-TileColor" content="#000000" />
+        <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+      </head>
       <body className={`${inter.className} min-h-screen bg-fixed bg-cover bg-center antialiased`}
         style={{
           backgroundImage: "url('/images/BG1.png')"
