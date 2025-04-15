@@ -2,6 +2,7 @@
 
 import { useLanguage } from '../contexts/LanguageContext'
 import SectionReveal from './SectionReveal'
+import BlurImage from './BlurImage'
 
 export default function Story({id}: { id?: string }) {
     const { t } = useLanguage()
@@ -21,14 +22,31 @@ export default function Story({id}: { id?: string }) {
                         </div>
                     </SectionReveal>
                     
-                    <div className="max-w-3xl mx-auto text-center relative z-10">
-                        <SectionReveal animation="fade-in" delay={200}>
-                            <p className="text-white/90 mb-8 text-lg leading-relaxed">
-                                {t('p1', 'story')}
-                            </p>
-                        </SectionReveal>
+                    <div className="max-w-3xl mx-auto relative z-10">
+                        <div className="flex flex-col md:flex-row gap-8 items-center mb-8">
+                            <div className="md:w-1/2 text-left">
+                                <SectionReveal animation="fade-in" delay={200}>
+                                    <p className="text-white/90 text-lg leading-relaxed">
+                                        {t('p1', 'story')}
+                                    </p>
+                                </SectionReveal>
+                            </div>
+                            <div className="md:w-1/2">
+                                <SectionReveal animation="fade-in" delay={300}>
+                                    <div className="rounded-xl overflow-hidden">
+                                        <BlurImage 
+                                            src="/images/news/BMW-image1.jpg" 
+                                            alt="Българска Музикална Работилница"
+                                            width={800}
+                                            height={600}
+                                            className="object-contain w-full h-auto"
+                                        />
+                                    </div>
+                                </SectionReveal>
+                            </div>
+                        </div>
                         
-                        <SectionReveal animation="fade-in" delay={400}>
+                        <SectionReveal animation="fade-in" delay={400} className="text-center">
                             <p className="text-white/90 text-lg leading-relaxed">
                                 {t('p2', 'story')}
                             </p>

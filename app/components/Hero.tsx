@@ -43,10 +43,10 @@ export default function Hero({id}: { id?: string }) {
                         className="transition-all duration-700"
                     >
                         <Image
-                            src="/images/Stoyanov2.svg"
+                            src="/images/Stoyanov-logo-1.svg"
                             alt="Stoyanov Guitars Logo"
-                            width={600}
-                            height={200}
+                            width={400}
+                            height={100}
                             className={`mx-auto mb-8 invert drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] ${mounted ? 'animate-pulse-subtle' : ''}`}
                             priority
                         />

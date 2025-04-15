@@ -164,7 +164,9 @@ const en: TranslationType = {
         readMore: 'Read More',
         viewAllNews: 'View All News',
         searchNews: 'Search news...',
-        backToNews: 'Back to News'
+        backToNews: 'Back to News',
+        viewDetails: 'View Details',
+        learnMore: 'Learn More'
     },
     nav: {
         story: 'My Story',
@@ -322,6 +324,11 @@ const en: TranslationType = {
             name: 'Fretless Bass',
             shortDescription: 'An Idea Of Mine Still In Development.',
             description: 'Currently in development, this custom fretless-bass bass represents our venture into the world of bass instruments. Inspired by the Marleaux Diva and featuring a beautiful Koa top sourced from a Swiss guitar builder, this bass is designed to be a versatile 3-in-1 instrument. It combines electric, acoustic, and synth capabilities, offering players an incredibly wide range of tonal possibilities. The fretless-bass design promises to deliver the smooth, singing qualities that only a fretless-bass bass can provide, while the multiple pickup systems ensure unparalleled versatility.'
+        },
+        'ginger-bass': {
+            name: 'Ginger Fretless Bass',
+            shortDescription: 'Custom fretless bass with premium materials and innovative design.',
+            description: 'The Ginger Fretless Bass represents our venture into the world of bass instruments. Inspired by the Marleaux Diva and featuring a beautiful Koa top sourced from a Swiss guitar builder, this bass is designed to be a versatile 3-in-1 instrument. It combines electric, acoustic, and synth capabilities, offering players an incredibly wide range of tonal possibilities. The fretless design delivers the smooth, singing qualities that only a fretless bass can provide, while the multiple pickup systems ensure unparalleled versatility.'
         }
     },
     privacyPolicy: {
@@ -372,7 +379,9 @@ const bg: TranslationType = {
         readMore: 'Прочети повече',
         viewAllNews: 'Виж всички новини',
         searchNews: 'Търси новини...',
-        backToNews: 'Обратно към Новини'
+        backToNews: 'Обратно към Новини',
+        viewDetails: 'Вижте детайли',
+        learnMore: 'Научете повече'
     },
     nav: {
         story: 'Моята История',

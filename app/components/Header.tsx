@@ -48,9 +48,9 @@ export default function Header() {
         <Link href="/#" className="flex items-center transition-transform duration-500 hover:scale-105 group">
           <div className="overflow-hidden">
             <Image
-              src="/images/Stoyanov2.svg"
+              src="/images/Stoyanov-logo-1.svg"
               alt="Stoyanov Guitars Logo"
-              width={200}
+              width={100}
               height={70}
               className="invert drop-shadow-[0_0_3px_rgba(255,255,255,0.3)] transition-all duration-500 transform group-hover:scale-105"
               priority
