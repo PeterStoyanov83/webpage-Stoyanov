@@ -139,6 +139,7 @@ export const guitars: Guitar[] = [
         image: '/images/news/Ginger.png',
         shortDescription: 'An Idea Of Mine Still In Development.',
         images: [
+            '/images/news/Ginger.png',
             '/images/guitars/fretless-bass/fretless01.jpg',
             '/images/guitars/fretless-bass/fretless02.jpg',
             '/images/guitars/fretless-bass/fretless03.jpg',
