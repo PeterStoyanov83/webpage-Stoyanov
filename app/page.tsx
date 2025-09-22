@@ -12,23 +12,23 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow snap-scroll-container">
-        <section className="snap-scroll-section">
+      <main className="flex-grow">
+        <section>
           <Hero />
         </section>
-        <section className="snap-scroll-section">
+        <section className="py-32">
           <Story id="story" />
         </section>
-        <section className="snap-scroll-section">
+        <section className="py-32">
           <Guitars id="guitars" />
         </section>
-        <section className="snap-scroll-section">
+        <section className="py-32">
           <Services id="services" />
         </section>
-        <section className="snap-scroll-section">
+        <section className="py-32">
           <News id="news" />
         </section>
-        <section className="snap-scroll-section">
+        <section className="py-32">
           <ContactForm id="contact" />
         </section>
       </main>

@@ -38,50 +38,47 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-10 transition-all duration-500">
-      {/* Gradient background with blur */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/50 backdrop-blur-md z-0"></div>
+      {/* Minimal dark background with thin border */}
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-0"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></div>
       
-      {/* Golden border line at the bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-guitar-gold/40 to-transparent"></div>
-      
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center text-white relative z-10">
-        <Link href="/#" className="flex items-center transition-transform duration-500 hover:scale-105 group">
-          <div className="overflow-hidden">
+      <div className="container mx-auto px-6 py-4 flex justify-between items-center text-white relative z-10">
+        <Link href="/#" className="flex items-center transition-opacity duration-300 hover:opacity-80">
+          <div>
             <Image
               src="/images/Stoyanov-logo-1.svg"
               alt="Stoyanov Guitars Logo"
-              width={100}
-              height={70}
-              className="invert drop-shadow-[0_0_3px_rgba(255,255,255,0.3)] transition-all duration-500 transform group-hover:scale-105"
+              width={80}
+              height={60}
+              className="invert opacity-90"
               priority
             />
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
-          <nav className="flex items-center space-x-8">
-            {navItems.map((item, index) => (
+        <div className="hidden md:flex items-center space-x-10">
+          <nav className="flex items-center space-x-10">
+            {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => navigateToSection(item.id)}
-                className="relative px-2 py-1 text-white/90 hover:text-guitar-gold font-light tracking-wider transition-all duration-300 overflow-hidden group"
+                className="relative px-1 py-1 text-white/70 hover:text-white text-sm uppercase tracking-widest transition-all duration-300 group"
               >
                 <span className="relative z-10">{item.label}</span>
-                {/* Bottom border that animates on hover */}
-                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-guitar-gold group-hover:w-full transition-all duration-300 ease-in-out"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white/30 group-hover:w-full transition-all duration-300 ease-in-out"></span>
               </button>
             ))}
           </nav>
           
-          <div className="border-l border-white/10 h-8 pl-6">
+          <div className="border-l border-white/10 h-5 pl-6">
             <LanguageSwitcher />
           </div>
         </div>
 
         {/* Mobile Navigation */}
         <div className="md:hidden flex items-center space-x-4">
-          <div className="border-r border-white/10 h-8 pr-4">
+          <div className="border-r border-white/10 h-5 pr-4">
             <LanguageSwitcher />
           </div>
 
@@ -89,11 +86,11 @@ export default function Header() {
             variant="ghost" 
             size="sm" 
             onClick={() => setIsOpen(!isOpen)}
-            className="p-1 text-white hover:text-guitar-gold transition-all duration-300 focus:outline-none"
+            className="p-1 text-white/70 hover:text-white transition-all duration-300 focus:outline-none"
           >
             {isOpen 
-              ? <X className="h-6 w-6 transition-transform duration-300 rotate-90" /> 
-              : <Menu className="h-6 w-6 transition-transform duration-300" />
+              ? <X className="h-5 w-5 transition-transform duration-300" /> 
+              : <Menu className="h-5 w-5 transition-transform duration-300" />
             }
             <span className="sr-only">Toggle menu</span>
           </Button>
@@ -102,21 +99,21 @@ export default function Header() {
 
       {/* Mobile Navigation Menu */}
       <div 
-        className={`md:hidden w-full backdrop-blur-md bg-black/70 shadow-[0_8px_16px_rgba(0,0,0,0.3)] z-20 
-          transition-all duration-500 overflow-hidden
-          ${isOpen ? 'max-h-[280px] border-t border-b border-guitar-gold/20' : 'max-h-0'}`}
+        className={`md:hidden w-full backdrop-blur-md bg-black/95 z-20 
+          transition-all duration-300 overflow-hidden
+          ${isOpen ? 'max-h-[280px] border-b border-white/10' : 'max-h-0'}`}
       >
         <div className="container mx-auto py-2">
           {navItems.map((item, index) => (
             <div 
               key={item.id}
-              className={`transition-all duration-300 py-4 border-b border-guitar-gold/10 last:border-none
-                ${isOpen ? 'opacity-100 transform-none' : 'opacity-0 -translate-y-4'}`}
-              style={{ transitionDelay: `${index * 80}ms` }}
+              className={`transition-all duration-300 py-3 last:border-none
+                ${isOpen ? 'opacity-100 transform-none' : 'opacity-0 -translate-y-2'}`}
+              style={{ transitionDelay: `${index * 50}ms` }}
             >
               <button
                 onClick={() => navigateToSection(item.id)}
-                className="block w-full text-center text-white/90 hover:text-guitar-gold transition-all duration-300 tracking-wider"
+                className="block w-full text-center text-white/60 hover:text-white text-sm uppercase tracking-widest transition-all duration-300"
               >
                 {item.label}
               </button>

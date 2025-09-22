@@ -13,35 +13,31 @@ export default function LanguageSwitcher() {
   return (
     <div className="relative">
       <div 
-        className="flex rounded-full bg-black/30 backdrop-blur-sm p-1 cursor-pointer border border-guitar-gold/20 hover:border-guitar-gold/40 transition-all duration-300 relative"
+        className="flex cursor-pointer transition-all duration-300 relative"
         onClick={toggleLanguage}
       >
-        {/* Moving background bubble */}
-        <div 
-          className={`absolute top-1 bottom-1 w-[calc(50%-2px)] rounded-full bg-black/50 border border-guitar-gold/30 transition-all duration-500 ease-in-out shadow-[0_0_5px_rgba(212,175,55,0.15)] z-0 
-            ${language === 'en' ? 'left-1 translate-x-0' : 'left-1 translate-x-[100%]'}`}
-        />
-        
         {/* English option */}
         <div 
-          className={`relative z-10 flex items-center justify-center rounded-full px-3 py-1 text-xs tracking-wider font-light transition-colors duration-300 min-w-[32px] ${
+          className={`relative flex items-center justify-center px-2 text-[10px] tracking-widest uppercase transition-colors duration-300 ${
             language === 'en' 
-              ? 'text-guitar-gold' 
-              : 'text-white/70 hover:text-white'
+              ? 'text-white' 
+              : 'text-white/40 hover:text-white/60'
           }`}
         >
-          EN
+          En
         </div>
+        
+        <div className="text-white/20">/</div>
         
         {/* Bulgarian option */}
         <div 
-          className={`relative z-10 flex items-center justify-center rounded-full px-3 py-1 text-xs tracking-wider font-light transition-colors duration-300 min-w-[32px] ${
+          className={`relative flex items-center justify-center px-2 text-[10px] tracking-widest uppercase transition-colors duration-300 ${
             language === 'bg' 
-              ? 'text-guitar-gold' 
-              : 'text-white/70 hover:text-white'
+              ? 'text-white' 
+              : 'text-white/40 hover:text-white/60'
           }`}
         >
-          BG
+          Bg
         </div>
       </div>
     </div>

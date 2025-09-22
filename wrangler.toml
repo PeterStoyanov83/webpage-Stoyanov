@@ -1,0 +1,9 @@
+name = "webpage"
+compatibility_date = "2024-09-22"
+
+[env.production]
+compatibility_date = "2024-09-22"
+
+[[env.production.routes]]
+pattern = "stoyanv-guitars.com/*"
+zone_name = "stoyanov-guitars.com"

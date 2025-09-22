@@ -37,12 +37,8 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="msapplication-config" content="/icons/browserconfig.xml" />
       </head>
-      <body className={`${inter.className} min-h-screen bg-fixed bg-cover bg-center antialiased`}
-        style={{
-          backgroundImage: "url('/images/BG1.png')"
-        }}
-      >
-        <div className="bg-black/10 min-h-screen backdrop-blur-[2px]">
+      <body className={`${inter.className} min-h-screen bg-black text-white antialiased`}>
+        <div className="min-h-screen">
           <LanguageProvider>
             <Suspense fallback={null}>
               <NavigationEvents />

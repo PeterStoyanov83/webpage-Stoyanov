@@ -1,19 +1,20 @@
-'use client'
-
-import { useParams, notFound } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import NewsDetail from '../../components/NewsDetail'
 import { newsItems } from '../../data/news'
 
-export default function NewsItemPage() {
-  // Use the useParams hook in a client component
-  const params = useParams()
-  const id = Array.isArray(params.id) ? params.id[0] : params.id?.toString()
-  
+export async function generateStaticParams() {
+  return newsItems.map((item) => ({
+    id: item.id,
+  }))
+}
+
+export default async function NewsItemPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const newsItem = newsItems.find(item => item.id === id)
-  
+
   if (!newsItem) {
     notFound()
   }
-  
+
   return <NewsDetail newsItem={newsItem} />
 }

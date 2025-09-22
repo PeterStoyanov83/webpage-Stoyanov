@@ -23,115 +23,104 @@ export default function News({ id }: NewsProps) {
   ).slice(0, 3)
 
   return (
-    <section id={id} className="py-16">
-      <div className="container mx-auto px-4">
-        <div className="bg-black/50 p-10 rounded-xl shadow-xl backdrop-blur-md border border-guitar-gold/20 relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-0 left-0 w-40 h-40 bg-guitar-gold/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-60 h-60 bg-guitar-gold/5 rounded-full blur-3xl"></div>
-          
-          <SectionReveal animation="slide-up" className="mb-12 relative z-10">
-            <div className="flex flex-col items-center">
-              <h2 className="text-4xl font-light text-center mb-3 tracking-wide text-white">
-                {t('news', 'nav') || 'News & Events'}
-              </h2>
-              <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-guitar-gold to-transparent"></div>
-            </div>
-          </SectionReveal>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-            {recentNews.map((item, index) => (
-              <SectionReveal 
-                key={item.id}
-                animation="slide-up" 
-                delay={150 * index}
-                threshold={0.1}
+    <section id={id} className="py-32">
+      <div className="max-w-[1400px] mx-auto px-6">
+        <SectionReveal animation="fade-in" className="mb-20">
+          <div className="flex flex-col items-center">
+            <h2 className="text-2xl font-light text-center mb-8 tracking-[0.3em] uppercase text-white/90">
+              {t('news', 'nav') || 'News & Events'}
+            </h2>
+            <div className="h-[1px] w-10 bg-white/20"></div>
+          </div>
+        </SectionReveal>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+          {recentNews.map((item, index) => (
+            <SectionReveal 
+              key={item.id}
+              animation="fade-in" 
+              delay={100 * index}
+              threshold={0.1}
+            >
+              <Link 
+                href={`/news/${item.id}`} 
+                className="block group" 
+                onMouseEnter={() => setHoveredItem(item.id)}
+                onMouseLeave={() => setHoveredItem(null)}
               >
-                <Link 
-                  href={`/news/${item.id}`} 
-                  className="block group" 
-                  onMouseEnter={() => setHoveredItem(item.id)}
-                  onMouseLeave={() => setHoveredItem(null)}
-                >
-                  <div className="bg-black/60 rounded-xl overflow-hidden shadow-xl border border-guitar-gold/10 group-hover:border-guitar-gold/30 transition-all duration-500 h-full backdrop-blur-sm relative">
-                    {/* Hover gradient effect */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-guitar-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
+                <article className="flex flex-col h-full">
+                  {/* Image section */}
+                  <div className="mb-6 overflow-hidden relative">
+                    {item.imageUrl ? (
+                      <Image 
+                        src={item.imageUrl} 
+                        alt={language === 'bg' && item.titleBg ? item.titleBg : item.title}
+                        width={600}
+                        height={450}
+                        className="w-full aspect-[4/3] object-cover transition-all duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full aspect-[4/3] bg-black/20 flex items-center justify-center">
+                        <span className="text-white/30 text-xs uppercase tracking-widest">No image</span>
+                      </div>
+                    )}
                     
-                    <div className="flex flex-col md:flex-row h-full">
-                      {/* Image section */}
-                      <div className="relative md:w-2/5 h-48 md:h-auto overflow-hidden">
-                        {item.imageUrl ? (
-                          <>
-                            <div className="w-full h-full relative">
-                              <Image 
-                                src={item.imageUrl} 
-                                alt={language === 'bg' && item.titleBg ? item.titleBg : item.title}
-                                fill
-                                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 200px"
-                              />
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-70"></div>
-                          </>
-                        ) : (
-                          <div className="w-full h-full bg-black/50 flex items-center justify-center">
-                            <span className="text-white/50">No image</span>
-                          </div>
-                        )}
-                        
-                        {/* Date badge */}
-                        <div className="absolute top-3 right-3 bg-black/60 px-3 py-1 rounded-full text-xs text-guitar-gold border border-guitar-gold/20 backdrop-blur-sm">
-                          {format(new Date(item.date), 'dd.MM.yyyy')}
-                        </div>
-                      </div>
-                      
-                      {/* Content section */}
-                      <div className="md:w-3/5 p-6 relative z-10">
-                        <h3 className="text-xl font-medium mb-3 text-white group-hover:text-guitar-gold transition-colors duration-300">
-                          {language === 'bg' && item.titleBg ? item.titleBg : item.title}
-                        </h3>
-                        <p className="text-white/80 group-hover:text-white text-sm transition-colors duration-300 line-clamp-3">
-                          {language === 'bg' && item.summaryBg ? item.summaryBg : item.summary}
-                        </p>
-                        
-                        <div className="mt-6 flex">
-                          <div className="px-4 py-1.5 rounded-full text-sm text-guitar-gold group-hover:text-white transition-all duration-300 flex items-center">
-                            <span>{t('readMore', 'common') || 'Read More'}</span>
-                            <ArrowRight className={`ml-1 w-4 h-4 transition-transform duration-500 ${
-                              hoveredItem === item.id ? 'translate-x-1' : ''
-                            }`} />
-                          </div>
-                        </div>
-                        
-                        {/* Tags */}
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {item.tags.slice(0, 3).map(tag => (
-                            <span 
-                              key={tag} 
-                              className="text-xs bg-black/40 text-white/70 px-2 py-1 rounded-full border border-guitar-gold/10"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                    {/* Date badge */}
+                    <div className="absolute bottom-4 left-4 text-xs text-white/60 uppercase tracking-wider">
+                      {format(new Date(item.date), 'dd.MM.yyyy')}
                     </div>
                   </div>
-                </Link>
-              </SectionReveal>
-            ))}
-          </div>
-          
-          <SectionReveal animation="slide-up" delay={600} className="mt-10 text-center relative z-10">
+                  
+                  {/* Content section */}
+                  <div className="flex flex-col space-y-3">
+                    <h3 className="text-base uppercase tracking-[0.15em] text-white/80 group-hover:text-white transition-colors duration-300">
+                      {language === 'bg' && item.titleBg ? item.titleBg : item.title}
+                    </h3>
+                    
+                    {/* Horizontal line separator */}
+                    <div className="h-[1px] w-full bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
+                    
+                    <p className="text-sm text-white/60 group-hover:text-white/80 transition-colors duration-300 line-clamp-3 leading-relaxed">
+                      {language === 'bg' && item.summaryBg ? item.summaryBg : item.summary}
+                    </p>
+                    
+                    <div className="mt-auto pt-4 flex justify-between items-center">
+                      {/* Tags */}
+                      <div className="flex space-x-2">
+                        {item.tags.slice(0, 1).map(tag => (
+                          <span 
+                            key={tag} 
+                            className="text-[10px] uppercase tracking-wider text-white/40"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      
+                      <button className="uppercase text-[10px] tracking-[0.2em] text-white/70 group-hover:text-white py-2 transition-colors duration-300 flex items-center">
+                        <span>{t('readMore', 'common') || 'Read'}</span>
+                        <ArrowRight className={`ml-1 w-3 h-3 transition-transform duration-500 ${
+                          hoveredItem === item.id ? 'translate-x-1' : ''
+                        }`} />
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              </Link>
+            </SectionReveal>
+          ))}
+        </div>
+        
+        <SectionReveal animation="fade-in" delay={300} className="mt-20">
+          <div className="flex justify-center">
             <Link 
               href="/news" 
-              className="inline-flex items-center px-6 py-3 bg-black/40 text-guitar-gold rounded-full border border-guitar-gold/20 hover:bg-black/70 hover:border-guitar-gold/40 transition-all duration-300 group"
+              className="px-8 py-3 uppercase text-[10px] tracking-[0.3em] border border-white/20 text-white/80 hover:text-white hover:border-white/40 transition-all duration-300"
             >
-              <span>{t('viewAllNews', 'common') || 'View All News'}</span>
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              {t('viewAllNews', 'common') || 'View All News'}
             </Link>
-          </SectionReveal>
-        </div>
+          </div>
+        </SectionReveal>
       </div>
     </section>
   )
